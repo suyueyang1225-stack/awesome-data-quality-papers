@@ -466,7 +466,7 @@ Each note is intentionally lightweight at first. Expand the sections as papers a
 <a id="data-shapley-equitable-valuation-of-data-for-machine-learning"></a>
 ## Data Shapley: Equitable Valuation of Data for Machine Learning
 
-- Section: Data Selection, Valuation, and Influence
+- Section: Data Selection
 - Original: https://arxiv.org/abs/1904.02868
 - README summary: Shapley-value framework for assigning value to individual training examples.
 
@@ -493,7 +493,7 @@ Each note is intentionally lightweight at first. Expand the sections as papers a
 <a id="estimating-training-data-influence-by-tracing-gradient-descent"></a>
 ## Estimating Training Data Influence by Tracing Gradient Descent
 
-- Section: Data Selection, Valuation, and Influence
+- Section: Data Selection
 - Original: https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html
 - README summary: TracIn estimates example influence using checkpoints and gradient information.
 
@@ -520,7 +520,7 @@ Each note is intentionally lightweight at first. Expand the sections as papers a
 <a id="data-valuation-using-reinforcement-learning"></a>
 ## Data Valuation Using Reinforcement Learning
 
-- Section: Data Selection, Valuation, and Influence
+- Section: Data Selection
 - Original: https://arxiv.org/abs/1909.11671
 - README summary: Learns data valuation policies for selecting beneficial samples.
 
@@ -547,7 +547,7 @@ Each note is intentionally lightweight at first. Expand the sections as papers a
 <a id="datamodels-predicting-predictions-from-training-data"></a>
 ## Datamodels: Predicting Predictions from Training Data
 
-- Section: Data Selection, Valuation, and Influence
+- Section: Data Selection
 - Original: https://arxiv.org/abs/2202.00622
 - README summary: Models how training subsets affect predictions and supports dataset debugging.
 
@@ -1279,6 +1279,411 @@ Each note is intentionally lightweight at first. Expand the sections as papers a
 - Section: Datasets and Data-Centric Benchmarks
 - Original: https://arxiv.org/abs/2101.00027
 - README summary: Large open text corpus with diverse sources.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-laws-for-neural-language-models"></a>
+## Scaling Laws for Neural Language Models
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2001.08361
+- README summary: Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="training-compute-optimal-large-language-models"></a>
+## Training Compute-Optimal Large Language Models
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2203.15556
+- README summary: Chinchilla-style compute-optimal scaling law for balancing parameter count and training tokens.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-data-constrained-language-models"></a>
+## Scaling Data-Constrained Language Models
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2305.16264
+- README summary: Studies data repetition and data scarcity, useful for reasoning about finite high-quality data and reuse.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="data-mixing-laws-optimizing-data-mixtures-by-predicting-language-modeling-performance"></a>
+## Data Mixing Laws: Optimizing Data Mixtures by Predicting Language Modeling Performance
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2403.16952
+- README summary: Models how pretraining data mixture proportions affect language-model performance.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-laws-for-downstream-task-performance-of-large-language-models"></a>
+## Scaling Laws for Downstream Task Performance of Large Language Models
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2402.04177
+- README summary: Studies how pretraining data size and distribution alignment affect fine-tuned downstream performance.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-laws-for-reward-model-overoptimization"></a>
+## Scaling Laws for Reward Model Overoptimization
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2210.10760
+- README summary: Post-training scaling study of reward model overoptimization and Goodhart-style failure modes.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-laws-for-reward-model-overoptimization-in-direct-alignment-algorithms"></a>
+## Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2406.02900
+- README summary: Extends overoptimization scaling analysis to direct alignment objectives such as DPO-style training.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="scaling-behaviors-of-llm-reinforcement-learning-post-training-an-empirical-study-in-mathematical-reasoning"></a>
+## Scaling Behaviors of LLM Reinforcement Learning Post-Training: An Empirical Study in Mathematical Reasoning
+
+- Section: Scaling Laws (Pretraining and Post-training)
+- Original: https://arxiv.org/abs/2509.25300
+- README summary: Empirical study of model scale, data volume, and compute in RL-based post-training for reasoning.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="evaluating-neural-toxic-degeneration-in-language-models"></a>
+## Evaluating Neural Toxic Degeneration in Language Models
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2009.11462
+- README summary: Introduces RealToxicityPrompts for measuring toxic generations and evaluating detoxification behavior.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="toxigen-a-large-scale-machine-generated-dataset-for-adversarial-and-implicit-hate-speech-detection"></a>
+## ToxiGen: A Large-Scale Machine-Generated Dataset for Adversarial and Implicit Hate Speech Detection
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2203.09509
+- README summary: Adversarial toxicity benchmark targeting implicit hate speech and spurious identity correlations.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="detoxifying-language-models-risks-marginalizing-minority-voices"></a>
+## Detoxifying Language Models Risks Marginalizing Minority Voices
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2104.06390
+- README summary: Shows that toxicity correction can harm utility for marginalized dialects and identity mentions.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="true-re-evaluating-factual-consistency-evaluation"></a>
+## TRUE: Re-evaluating Factual Consistency Evaluation
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2204.04991
+- README summary: Standardized meta-evaluation of factual and semantic consistency metrics across grounded generation tasks.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="selfcheckgpt-zero-resource-black-box-hallucination-detection-for-generative-large-language-models"></a>
+## SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2303.08896
+- README summary: Uses cross-sample agreement as a semantic consistency signal for hallucination detection.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="g-eval-nlg-evaluation-using-gpt-4-with-better-human-alignment"></a>
+## G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2303.16634
+- README summary: LLM-as-judge framework for evaluating generated text quality with natural-language rubrics.
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
+<a id="textbooks-are-all-you-need"></a>
+## Textbooks Are All You Need
+
+- Section: Quality Evaluation Metrics
+- Original: https://arxiv.org/abs/2306.11644
+- README summary: Demonstrates textbook-quality and knowledge-dense data as a strong signal for data-efficient model training.
 
 ### Problem
 

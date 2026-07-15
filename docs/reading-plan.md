@@ -6,25 +6,25 @@ This reading plan turns the repository into a research workflow.
 
 - Read the surveys in "General Surveys and Position Papers".
 - Build a private glossary for quality, utility, diversity, provenance, and contamination.
-- Decide whether the target paper is primarily about evaluation, improvement, or a closed-loop system.
+- Decide whether the target paper is primarily about scaling laws, data selection, or quality evaluation metrics.
 
-## Week 2: Pretraining Data Quality
+## Week 2: Scaling Laws
 
-- Read DataComp-LM, FineWeb, Dolma, RedPajama, and QuRating.
-- Extract each paper's quality signals, filters, ablation protocol, and downstream metrics.
-- Compare rule-based, model-based, and human-preference-inspired quality signals.
+- Read scaling-law papers for pretraining, data-constrained regimes, data mixing, downstream transfer, and post-training.
+- Extract the variables each paper scales: model size, token count, data mixture, data quality, SFT/RL data volume, and reward optimization budget.
+- Identify which scaling laws can predict returns from better data before full-scale training.
 
-## Week 3: Instruction and Alignment Data
+## Week 3: Data Selection
 
-- Read AlpaGasus, LESS, LIMA, and instruction backtranslation.
-- Study when fewer examples improve model behavior.
-- Map quality dimensions for instruction-response pairs: correctness, helpfulness, diversity, safety, and target skill transfer.
+- Read Data Shapley, TracIn, Datamodels, LESS, AlpaGasus, LIMA, and instruction-data selection papers.
+- Compare per-example value, subset value, target-task influence, diversity, and data mixture optimization.
+- Study when fewer or better examples improve model behavior, and when filtering harms coverage or robustness.
 
-## Week 4: Data Valuation and Influence
+## Week 4: Quality Evaluation Metrics
 
-- Read Data Shapley, TracIn, Datamodels, and LESS.
-- Compare per-example value, subset value, and target-task influence.
-- Identify which methods can scale to foundation-model data.
+- Read toxicity, detoxification, factual/semantic consistency, LLM-as-judge, knowledge-density, and educational-value metric papers.
+- Map metrics to data operations: filtering, rewriting, correction, deduplication, densification, and selection.
+- Record metric disagreements, false positives, minority-language or dialect risks, and task-specific failure modes.
 
 ## Week 5: Tools and Reproducibility
 
@@ -37,4 +37,3 @@ This reading plan turns the repository into a research workflow.
 - Convert the taxonomy into a problem statement.
 - Define baselines, target datasets, quality metrics, improvement operations, and validation tasks.
 - Write the first version of the experiment table.
-

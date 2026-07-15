@@ -12,16 +12,18 @@ Research context: [Feishu research note](https://hyjx6666.feishu.cn/docx/Ww2DdU7
 
 Data quality is no longer only a preprocessing detail. In large-scale AI, data quality directly shapes model capability, safety, bias, factuality, compute efficiency, and evaluation reliability.
 
-This repository organizes the field around three questions:
+This repository organizes the field around three research directions:
 
-- **How do we evaluate data quality?** Metrics, quality signals, data attribution, contamination checks, diversity/coverage analysis, and task-aware utility.
-- **How do we improve data quality?** Filtering, deduplication, data selection, rewriting, augmentation, synthetic data generation, curriculum design, and data mixture optimization.
-- **How do we validate improvement?** Controlled ablations, downstream evaluation, robustness/safety checks, cost-quality tradeoffs, and reproducible data recipes.
+- **Scaling laws**: how data quantity, data quality, data mixture, model size, compute, and post-training budget interact in pretraining and post-training.
+- **Data selection**: how to select, value, filter, mix, and schedule data for target capabilities under compute and annotation constraints.
+- **Quality evaluation metrics**: how to measure toxicity and detoxification effects, semantic/factual consistency, knowledge density, educational value, safety, and downstream utility.
 
 ### Key Dimensions
 
 - **Correctness**: factuality, label validity, answer faithfulness, instruction-response alignment.
 - **Usefulness**: task relevance, target capability transfer, educational value, information density.
+- **Semantic Consistency**: entailment, contradiction, hallucination, source grounding, and cross-sample agreement.
+- **Knowledge Density**: amount of useful, non-redundant, learnable knowledge per token or example.
 - **Diversity**: coverage of domains, skills, languages, styles, difficulty levels, and demographics.
 - **Safety**: toxicity, privacy leakage, prompt injection, bias, harmful instructions, unsafe outputs.
 - **Freshness**: temporal validity, stale facts, outdated web content, versioned knowledge.
@@ -31,9 +33,11 @@ This repository organizes the field around three questions:
 ## Contents
 
 - [General Surveys and Position Papers](#general-surveys-and-position-papers)
+- [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training)
 - [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining)
 - [Instruction Tuning and Alignment Data](#instruction-tuning-and-alignment-data)
-- [Data Selection, Valuation, and Influence](#data-selection-valuation-and-influence)
+- [Data Selection](#data-selection)
+- [Quality Evaluation Metrics](#quality-evaluation-metrics)
 - [Filtering, Cleaning, and Deduplication](#filtering-cleaning-and-deduplication)
 - [Synthetic Data Generation and Curation](#synthetic-data-generation-and-curation)
 - [Multimodal Data Quality](#multimodal-data-quality)
@@ -53,6 +57,17 @@ This repository organizes the field around three questions:
 - **On LLMs-Driven Synthetic Data Generation, Curation, and Evaluation** - [原文](https://aclanthology.org/2024.findings-acl.658/) · [阅读笔记](docs/reading-notes.md#on-llms-driven-synthetic-data-generation-curation-and-evaluation) - Survey of synthetic data workflows, curation, evaluation, and risks.
 - **What Makes a High-Quality Training Dataset for Large Language Models: A Practitioners' Perspective** - [原文](https://nzjohng.github.io/publications/papers/ase2024_1.pdf) · [阅读笔记](docs/reading-notes.md#what-makes-a-high-quality-training-dataset-for-large-language-models-a-practitioners-perspective) - Practitioner-oriented discussion of dataset quality factors for LLM development.
 
+## Scaling Laws (Pretraining and Post-training)
+
+- **Scaling Laws for Neural Language Models** - [原文](https://arxiv.org/abs/2001.08361) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-neural-language-models) - Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
+- **Training Compute-Optimal Large Language Models** - [原文](https://arxiv.org/abs/2203.15556) · [阅读笔记](docs/reading-notes.md#training-compute-optimal-large-language-models) - Chinchilla-style compute-optimal scaling law for balancing parameter count and training tokens.
+- **Scaling Data-Constrained Language Models** - [原文](https://arxiv.org/abs/2305.16264) · [阅读笔记](docs/reading-notes.md#scaling-data-constrained-language-models) - Studies data repetition and data scarcity, useful for reasoning about finite high-quality data and reuse.
+- **Data Mixing Laws: Optimizing Data Mixtures by Predicting Language Modeling Performance** - [原文](https://arxiv.org/abs/2403.16952) · [阅读笔记](docs/reading-notes.md#data-mixing-laws-optimizing-data-mixtures-by-predicting-language-modeling-performance) - Models how pretraining data mixture proportions affect language-model performance.
+- **Scaling Laws for Downstream Task Performance of Large Language Models** - [原文](https://arxiv.org/abs/2402.04177) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-downstream-task-performance-of-large-language-models) - Studies how pretraining data size and distribution alignment affect fine-tuned downstream performance.
+- **Scaling Laws for Reward Model Overoptimization** - [原文](https://arxiv.org/abs/2210.10760) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-reward-model-overoptimization) - Post-training scaling study of reward model overoptimization and Goodhart-style failure modes.
+- **Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms** - [原文](https://arxiv.org/abs/2406.02900) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-reward-model-overoptimization-in-direct-alignment-algorithms) - Extends overoptimization scaling analysis to direct alignment objectives such as DPO-style training.
+- **Scaling Behaviors of LLM Reinforcement Learning Post-Training: An Empirical Study in Mathematical Reasoning** - [原文](https://arxiv.org/abs/2509.25300) · [阅读笔记](docs/reading-notes.md#scaling-behaviors-of-llm-reinforcement-learning-post-training-an-empirical-study-in-mathematical-reasoning) - Empirical study of model scale, data volume, and compute in RL-based post-training for reasoning.
+
 ## Data Quality for LLM Pretraining
 
 - **DataComp-LM: In Search of the Next Generation of Training Sets for Language Models** - [原文](https://arxiv.org/abs/2406.11794) · [阅读笔记](docs/reading-notes.md#datacomp-lm-in-search-of-the-next-generation-of-training-sets-for-language-models) - Controlled testbed for language-model data curation, including filtering, deduplication, data mixing, and downstream evaluation.
@@ -71,7 +86,7 @@ This repository organizes the field around three questions:
 - **Self-Alignment with Instruction Backtranslation** - [原文](https://openreview.net/forum?id=1oijHJBRsT) · [阅读笔记](docs/reading-notes.md#self-alignment-with-instruction-backtranslation) - Uses model-generated instructions from high-quality responses to improve instruction tuning data.
 - **LIMA: Less Is More for Alignment** - [原文](https://arxiv.org/abs/2305.11206) · [阅读笔记](docs/reading-notes.md#lima-less-is-more-for-alignment) - Shows strong alignment behavior can emerge from a small carefully curated supervised fine-tuning dataset.
 
-## Data Selection, Valuation, and Influence
+## Data Selection
 
 - **Data Shapley: Equitable Valuation of Data for Machine Learning** - [原文](https://arxiv.org/abs/1904.02868) · [阅读笔记](docs/reading-notes.md#data-shapley-equitable-valuation-of-data-for-machine-learning) - Shapley-value framework for assigning value to individual training examples.
 - **Estimating Training Data Influence by Tracing Gradient Descent** - [原文](https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html) · [阅读笔记](docs/reading-notes.md#estimating-training-data-influence-by-tracing-gradient-descent) - TracIn estimates example influence using checkpoints and gradient information.
@@ -79,6 +94,18 @@ This repository organizes the field around three questions:
 - **Datamodels: Predicting Predictions from Training Data** - [原文](https://arxiv.org/abs/2202.00622) · [阅读笔记](docs/reading-notes.md#datamodels-predicting-predictions-from-training-data) - Models how training subsets affect predictions and supports dataset debugging.
 - [LESS](https://github.com/princeton-nlp/LESS) - Codebase for influence-based targeted instruction data selection.
 - [pyDVL](https://pydvl.org/stable/value/) - Python library for data valuation methods and workflows.
+
+## Quality Evaluation Metrics
+
+- **Evaluating Neural Toxic Degeneration in Language Models** - [原文](https://arxiv.org/abs/2009.11462) · [阅读笔记](docs/reading-notes.md#evaluating-neural-toxic-degeneration-in-language-models) - Introduces RealToxicityPrompts for measuring toxic generations and evaluating detoxification behavior.
+- **ToxiGen: A Large-Scale Machine-Generated Dataset for Adversarial and Implicit Hate Speech Detection** - [原文](https://arxiv.org/abs/2203.09509) · [阅读笔记](docs/reading-notes.md#toxigen-a-large-scale-machine-generated-dataset-for-adversarial-and-implicit-hate-speech-detection) - Adversarial toxicity benchmark targeting implicit hate speech and spurious identity correlations.
+- **Detoxifying Language Models Risks Marginalizing Minority Voices** - [原文](https://arxiv.org/abs/2104.06390) · [阅读笔记](docs/reading-notes.md#detoxifying-language-models-risks-marginalizing-minority-voices) - Shows that toxicity correction can harm utility for marginalized dialects and identity mentions.
+- **TRUE: Re-evaluating Factual Consistency Evaluation** - [原文](https://arxiv.org/abs/2204.04991) · [阅读笔记](docs/reading-notes.md#true-re-evaluating-factual-consistency-evaluation) - Standardized meta-evaluation of factual and semantic consistency metrics across grounded generation tasks.
+- **SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models** - [原文](https://arxiv.org/abs/2303.08896) · [阅读笔记](docs/reading-notes.md#selfcheckgpt-zero-resource-black-box-hallucination-detection-for-generative-large-language-models) - Uses cross-sample agreement as a semantic consistency signal for hallucination detection.
+- **G-Eval: NLG Evaluation using GPT-4 with Better Human Alignment** - [原文](https://arxiv.org/abs/2303.16634) · [阅读笔记](docs/reading-notes.md#g-eval-nlg-evaluation-using-gpt-4-with-better-human-alignment) - LLM-as-judge framework for evaluating generated text quality with natural-language rubrics.
+- **Textbooks Are All You Need** - [原文](https://arxiv.org/abs/2306.11644) · [阅读笔记](docs/reading-notes.md#textbooks-are-all-you-need) - Demonstrates textbook-quality and knowledge-dense data as a strong signal for data-efficient model training.
+- **The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale** - [原文](https://arxiv.org/abs/2406.17557) · [阅读笔记](docs/reading-notes.md#the-fineweb-datasets-decanting-the-web-for-the-finest-text-data-at-scale) - Includes FineWeb-Edu, an educational-quality filter that operationalizes knowledge density and learning value.
+- **QuRating: Selecting High-Quality Data for Training Language Models** - [原文](https://arxiv.org/abs/2402.09739) · [阅读笔记](docs/reading-notes.md#qurating-selecting-high-quality-data-for-training-language-models) - Uses LLM-based ratings for educational value, expertise, writing style, and factual content as quality metrics.
 
 ## Filtering, Cleaning, and Deduplication
 
@@ -145,36 +172,50 @@ This repository organizes the field around three questions:
 
 ## Research Roadmap
 
-### 1. Metric Design
+### 1. Scaling Laws
+
+- Study pretraining scaling laws under data quality, data repetition, data mixture, and data scarcity.
+- Extend scaling analysis to post-training, including SFT, DPO/RLHF, reward model overoptimization, and RL reasoning.
+- Report compute-normalized and data-normalized gains, not only final benchmark scores.
+
+### 2. Data Selection
+
+- Compare rule-based filters, model-based filters, influence methods, and LLM judges.
+- Separate intrinsic quality, target-task influence, domain coverage, and diversity.
+- Treat data mixture optimization and curriculum scheduling as first-class research objects.
+
+### 3. Quality Evaluation Metrics
 
 - Build task-aware quality metrics instead of relying only on generic heuristics.
 - Separate intrinsic data quality from model-, objective-, and evaluation-dependent utility.
-- Measure quality across correctness, diversity, safety, freshness, and provenance.
+- Measure toxicity detection and correction, semantic consistency, factuality, knowledge density, diversity, safety, freshness, and provenance.
 
-### 2. Evaluation Protocols
+### 4. Evaluation Protocols
 
 - Use controlled ablations that isolate one data operation at a time.
 - Report compute-normalized gains, not only final model scores.
 - Evaluate side effects: bias, language/domain coverage, memorization, and safety.
 
-### 3. Data Improvement Methods
+### 5. Data Improvement Methods
 
-- Compare rule-based filters, model-based filters, influence methods, and LLM judges.
-- Study data rewriting and repair, not only removal.
-- Treat data mixture optimization as a first-class research object.
+- Study data rewriting, detoxification, consistency repair, knowledge densification, and answer correction, not only removal.
+- Pair every improvement operation with regression tests for robustness, diversity, and safety.
 
-### 4. Reproducibility
+### 6. Reproducibility
 
 - Version datasets, filters, thresholds, prompts, and model checkpoints.
 - Publish metadata schemas and data cards.
 - Prefer executable data recipes over prose-only descriptions.
 
-### 5. Open Problems
+### 7. Open Problems
 
+- How can we predict returns from better data using scaling laws before training expensive models?
+- Do pretraining and post-training share the same data-quality scaling behavior?
+- Which data selection methods transfer across target capabilities, domains, and languages?
 - How can we evaluate data quality without training expensive proxy models?
 - Can quality metrics generalize across domains, languages, and modalities?
-- When does filtering improve benchmark scores while harming diversity or robustness?
-- How should we evaluate generated or rewritten data when references are unavailable?
+- When does filtering improve benchmark scores while harming diversity, robustness, or minority-language performance?
+- How should we evaluate generated, detoxified, consistency-repaired, or knowledge-densified data when references are unavailable?
 - Can data quality improvement be made interactive, auditable, and human-controllable?
 
 ## Contribution Guide
