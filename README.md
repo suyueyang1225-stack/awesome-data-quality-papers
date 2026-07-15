@@ -74,7 +74,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - [Contribution Guide](#contribution-guide) - how to add papers and notes.
 - [Reading Notes](docs/reading-notes.md) - structured notes for listed papers.
 
-## General Surveys and Position Papers
+## General Surveys
 
 - **Data-Centric Artificial Intelligence** - [原文](https://arxiv.org/abs/2212.11854) · [阅读笔记](docs/reading-notes.md#data-centric-artificial-intelligence) - A broad survey of data-centric AI goals, methods, and lifecycle thinking.
 - **Systematic Review of Data-Centric Approaches in Artificial Intelligence and Machine Learning** - [原文](https://www.sciencedirect.com/science/article/pii/S2666764923000279) · [阅读笔记](docs/reading-notes.md#systematic-review-of-data-centric-approaches-in-artificial-intelligence-and-machine-learning) - Reviews data quality assessment, preprocessing, transfer learning, semi-supervised learning, MLOps, and data scale effects.
