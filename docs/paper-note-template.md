@@ -2,7 +2,9 @@
 
 Main note index: [Reading Notes](reading-notes.md)
 
-Use this template for high-quality paper notes in this repository. It is adapted from the `paper-reader` workflow and customized for data quality evaluation and improvement research.
+Use this template for every completed paper-reading note in this repository. It is adapted from the `paper-reader` workflow and customized for data quality evaluation and improvement research.
+
+This is the required format for collaborative paper reading. Do not submit shortened free-form notes as completed reading notes. If a paper does not contain equations, figures, tables, code, datasets, or released artifacts, keep the corresponding section and write `N/A` with a short reason.
 
 Every completed note should answer four questions:
 
@@ -10,6 +12,15 @@ Every completed note should answer four questions:
 - What is the exact method, metric, dataset, or scaling claim?
 - How does it change our understanding of data quality?
 - What should a future researcher trust, question, reproduce, or build on?
+
+## Required Completion Standard
+
+- Keep all numbered sections from the template.
+- Fill every metadata field, using `N/A` only when the item truly does not exist.
+- Record all important equations, scoring rules, figures, and tables.
+- Make the data-quality angle explicit, not just the general ML contribution.
+- Include limitations, failure modes, and reproducibility status.
+- Use [taxonomy.md](taxonomy.md) to fill the primary category and cross-tags.
 
 ````markdown
 <a id="{stable-paper-anchor}"></a>
@@ -228,6 +239,7 @@ Record every important Figure and Table. For a full paper read, do not skip figu
 - [ ] README `阅读笔记` link points to `docs/paper-note-template.md`.
 - [ ] Primary taxonomy category is filled.
 - [ ] Cross-tags are filled when the paper spans multiple branches.
+- [ ] All required template sections are kept.
 - [ ] All important equations or scoring rules are captured.
 - [ ] All main figures are summarized.
 - [ ] All main tables are summarized.

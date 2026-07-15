@@ -22,6 +22,13 @@ assignees: ""
 
 Explain how this resource helps evaluate or improve data quality.
 
+## Reading Note Plan
+
+- Note owner:
+- Reading status: not started / in progress / completed
+- I will use `docs/paper-note-template.md` for the completed note: yes / no
+- Sections expected to be `N/A` and why:
+
 ## Suggested Section
 
 Choose one:

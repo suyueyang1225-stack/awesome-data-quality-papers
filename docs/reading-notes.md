@@ -1,10 +1,10 @@
 # Reading Notes
 
-This file provides a reading-note entry point for each paper or paper-like resource listed in the README.
+This file provides a lightweight reading-progress index for each paper or paper-like resource listed in the README.
 
-Each note is intentionally lightweight at first. Expand the sections as papers are read in detail.
+Completed paper-reading notes must follow the full structure in [paper-note-template.md](paper-note-template.md). Lightweight entries here are only for tracking status before a full note is written.
 
-For careful reading, use the high-quality template in [paper-note-template.md](paper-note-template.md). README paper entries link to that template, while this file remains a lightweight index for tracking reading progress.
+README paper entries link to [paper-note-template.md](paper-note-template.md) so every contributor sees the same required format before writing.
 
 <a id="data-centric-artificial-intelligence"></a>
 ## Data-Centric Artificial Intelligence

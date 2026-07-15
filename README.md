@@ -68,6 +68,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - [Tools and Systems](#tools-and-systems) - reusable software for processing, evaluation, and auditing.
 - [Datasets and Data-Centric Benchmarks](#datasets-and-data-centric-benchmarks) - public corpora and benchmarks.
 - [Research Roadmap](#research-roadmap) - open problems and research agenda.
+- [Reading Note Standard](#reading-note-standard) - required format for collaborative paper notes.
 - [Contribution Guide](#contribution-guide) - how to add papers and notes.
 - [Reading Notes](docs/reading-notes.md) - lightweight note index for listed papers.
 - [Paper Note Template](docs/paper-note-template.md) - high-quality template linked from each paper entry.
@@ -252,6 +253,17 @@ This branch covers measurement and auditing signals. RAG data quality, multimoda
 - When does filtering improve benchmark scores while harming diversity, robustness, or minority-language performance?
 - How should we evaluate generated, detoxified, consistency-repaired, or knowledge-densified data when references are unavailable?
 - Can data quality improvement be made interactive, auditable, and human-controllable?
+
+## Reading Note Standard
+
+All completed paper-reading notes must follow [docs/paper-note-template.md](docs/paper-note-template.md). The repository is designed for collaborative reading, so notes should use the same structure across papers.
+
+Required rule:
+
+- Keep every numbered section in the template.
+- Use `N/A` with a short reason when a section does not apply.
+- Capture taxonomy placement, method details, equations or scoring rules, figures, tables, data setup, evidence, data-quality angle, limitations, and reproducibility status.
+- Use [docs/reading-notes.md](docs/reading-notes.md) only as a lightweight reading-progress index.
 
 ## Contribution Guide
 
