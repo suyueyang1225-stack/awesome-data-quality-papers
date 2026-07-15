@@ -10,7 +10,7 @@ assignees: ""
 
 - Title:
 - URL:
-- Reading note anchor:
+- Reading note template: docs/paper-note-template.md
 - Year:
 - Venue:
 - Primary taxonomy category:

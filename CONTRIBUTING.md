@@ -16,10 +16,10 @@ Good additions usually satisfy at least one of these criteria:
 Use concise, research-oriented summaries:
 
 ```markdown
-- **Title** - [原文](paper-url) · [阅读笔记](docs/reading-notes.md#title-anchor) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
+- **Title** - [原文](paper-url) · [阅读笔记](docs/paper-note-template.md) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
 ```
 
-Also add a matching section in `docs/reading-notes.md` with a stable anchor:
+Optionally add or expand a matching lightweight section in `docs/reading-notes.md` for reading progress:
 
 ```markdown
 <a id="title-anchor"></a>

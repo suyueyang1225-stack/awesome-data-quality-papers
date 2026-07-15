@@ -225,7 +225,7 @@ Record every important Figure and Table. For a full paper read, do not skip figu
 ### 15. Note Completion Checklist
 
 - [ ] Original link is included.
-- [ ] Reading note anchor is stable and matches the README link.
+- [ ] README `阅读笔记` link points to `docs/paper-note-template.md`.
 - [ ] Primary taxonomy category is filled.
 - [ ] Cross-tags are filled when the paper spans multiple branches.
 - [ ] All important equations or scoring rules are captured.
