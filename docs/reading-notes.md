@@ -1305,314 +1305,314 @@ Unfinished README paper entries link to [paper-note-template.md](paper-note-temp
 <a id="scaling-laws-for-neural-language-models"></a>
 ## Scaling Laws for Neural Language Models
 
-- Primary taxonomy category: A1 Pretraining compute/token scaling
-- Cross-tags: A2 Data-constrained scaling, A3 Data mixture and domain scaling, A4 Downstream transfer scaling, B1 General data valuation and influence, C6 Evaluation reliability
-- README subsection: Scaling Laws (Pretraining and Post-training)
-- Original: https://arxiv.org/abs/2001.08361
-- Code: N/A
-- Dataset: WebText2 is described in the paper but not released as a standalone public dataset.
-- Year / Venue: 2020, arXiv
-- Authors: Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, Dario Amodei
-- Reading status: carefully read
-- README summary: Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
+- 主要分类：A1 预训练计算量 / token 缩放规律
+- 交叉标签：A2 数据受限缩放、A3 数据混合与领域缩放、A4 下游迁移缩放、B1 数据价值与影响、C6 评测可靠性
+- README 小节：Scaling Laws (Pretraining and Post-training)
+- 原文：https://arxiv.org/abs/2001.08361
+- 代码：N/A
+- 数据集：论文描述了 WebText2，但没有以可复现的公开数据集形式发布。
+- 年份 / 发表渠道：2020, arXiv
+- 作者：Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, Dario Amodei
+- 阅读状态：已精读
+- README 摘要：关于语言模型损失如何随模型规模、数据规模和计算量变化的奠基性 scaling law 论文。
 
-### 1. One-Sentence Takeaway
+### 1. 一句话结论
 
-> Language-model cross-entropy follows smooth power laws in model size, dataset size, and optimized compute, making data quantity and data reuse first-class variables in pretraining data quality planning.
+> 语言模型的交叉熵损失会随模型规模、数据规模和优化后的计算量呈现平滑幂律下降，因此数据数量、数据复用和有效 token 质量应被视为预训练数据质量研究中的核心变量。
 
-### 2. Research Question
+### 2. 研究问题
 
-- **Problem**: How can we predict language-model loss before running very large pretraining jobs, and how should a fixed compute budget be split across parameters, data, batch size, and training steps?
-- **Setting**: Decoder-only language-model pretraining on web text, with auxiliary evaluations on other text distributions.
-- **Why it matters**: Without scaling laws, data construction and compute allocation are mostly heuristic. Teams can overtrain small models, underbuild corpora, or misinterpret model gains as architecture gains.
-- **Main claim**: Test loss can be predicted by power laws in non-embedding parameter count `N`, dataset tokens `D`, and optimized compute `C_min`; compute-efficient training should scale model size much faster than the number of serial optimization steps.
+- **问题**：在训练超大语言模型之前，能否预测最终 loss？在固定计算预算下，应该把预算分给更多参数、更多数据、更大 batch，还是更长训练步数？
+- **场景**：基于 WebText2 的自回归语言模型预训练，主模型是 decoder-only Transformer，并在多个文本分布上做迁移评估。
+- **重要性**：如果没有 scaling law，数据构建和计算资源分配会高度依赖经验。团队可能会过度训练小模型、低估数据规模需求，或把 scale 带来的收益误判为架构改进。
+- **核心主张**：测试集 loss 可以用非 embedding 参数量 `N`、数据 token 数 `D` 和优化后的计算量 `C_min` 的幂律关系预测；在计算最优训练中，模型规模应比串行训练步数增长得更快。
 
-### 3. Taxonomy Placement
+### 3. 分类定位
 
-| Field | Answer |
+| 字段 | 内容 |
 | --- | --- |
-| Main branch | Scaling Laws |
-| Subcategory | A1 Pretraining compute/token scaling |
-| Data object | Token sequence, document corpus, training token budget |
-| Quality signal | Predictive cross-entropy loss, transfer loss offsets across domains, overfitting ratio |
-| Data operation | Measure, budget, schedule, audit, decide whether more tokens or more parameters are needed |
+| 主分支 | Scaling Laws |
+| 子类 | A1 预训练计算量 / token 缩放规律 |
+| 数据对象 | token 序列、文档语料、训练 token 预算 |
+| 质量信号 | 预测性 cross-entropy loss、跨领域迁移 loss 偏移、过拟合比例 |
+| 数据操作 | 测量、预算规划、训练调度、审计、判断应该增加 token 还是参数 |
 
-### 4. Background and Motivation
+### 4. 背景与动机
 
-- **Prior approach**: Earlier work studied model-size scaling, compute scaling, or architecture comparisons, but usually did not jointly vary model size, dataset size, training duration, and batch-size effects over many orders of magnitude.
-- **Limitation**: A fixed-data or fixed-compute view cannot answer whether the next unit of budget should go to more parameters, more tokens, larger batches, or more serial steps.
-- **Key intuition**: When models and data are large enough, the average loss behaves like a low-dimensional thermodynamic quantity: it is mostly controlled by scale and only weakly by architectural details.
-- **Assumptions**: The study assumes autoregressive maximum-likelihood training, mostly English web text, comparable tokenization, early stopping before severe overfitting, and extrapolation from sub-2B parameter experiments to larger regimes.
+- **已有做法**：早期工作分别研究模型规模、计算量或架构比较，但较少同时大范围改变模型参数量、数据规模、训练时长和 batch-size 影响。
+- **局限**：只看固定数据或固定计算，无法回答“下一单位预算应该投给参数、数据、batch 还是训练步数”。
+- **关键直觉**：当模型和数据足够大时，平均 loss 像一个低维宏观量，主要由 scale 控制，而不是由具体架构细节控制。
+- **基本假设**：自回归最大似然训练、以英文 web 文本为主、tokenization 可比、通过 early stopping 避免严重过拟合，并从 20 亿参数以下的实验外推到更大规模。
 
-### 5. Method / Metric / System
+### 5. 方法 / 指标 / 系统
 
-#### 5.1 Method Overview
+#### 5.1 方法概览
 
-- Input: model scale `N`, dataset size `D`, training compute `C`, batch size `B`, and training steps `S`.
-- Output: predicted test cross-entropy loss and compute-efficient allocation rules.
-- Core algorithm / metric: fit power laws for loss versus `N`, `D`, `C`, and adjusted compute `C_min`; then derive optimal allocations using fitted exponents.
-- Training or evaluation loop: train many Transformer language models, plus LSTM and recurrent/universal Transformer variants, on WebText2 and evaluate held-out loss.
-- Model or judge used: autoregressive language models; the judge is the negative log-likelihood on held-out text.
-- Human annotation, if any: N/A.
-- Thresholds, prompts, or scoring rules: N/A. The central scores are loss, overfitting ratio, critical batch size, and estimated compute to target loss.
+- 输入：模型规模 `N`、数据集规模 `D`、训练计算量 `C`、batch size `B`、训练步数 `S`。
+- 输出：预测测试集 cross-entropy loss，并给出计算最优的资源分配规律。
+- 核心方法：拟合 loss 关于 `N`、`D`、`C` 和 batch-adjusted `C_min` 的幂律关系，再用拟合出的指数推导最优资源分配。
+- 训练 / 评估流程：训练大量 Transformer 语言模型，同时比较 LSTM、Universal Transformer / Recurrent Transformer 等变体；在 WebText2 held-out 数据上评估 loss。
+- 模型或 judge：自回归语言模型；评价信号是 held-out text 上的 negative log-likelihood。
+- 人工标注：N/A。
+- 阈值、prompt 或打分规则：N/A。核心分数是 loss、过拟合比例、critical batch size 和达到目标 loss 所需的最小计算量。
 
-#### 5.2 Key Equations or Scoring Rules
+#### 5.2 关键公式或评分规则
 
-##### Equation / Score 1: Model-size scaling
+##### 公式 1：模型规模缩放
 
 ```text
 L(N) = (N_c / N) ^ alpha_N
 alpha_N ~= 0.076, N_c ~= 8.8e13 non-embedding parameters
 ```
 
-**Meaning**: If data and compute are not limiting, larger non-embedding parameter count predicts lower loss.
+**含义**：当数据和计算不是瓶颈时，非 embedding 参数量越大，预测 loss 越低。
 
-**Symbols**:
-- `L`: cross-entropy loss in nats per token.
-- `N`: non-embedding parameter count.
-- `N_c`: fitted scale constant.
-- `alpha_N`: model-size scaling exponent.
+**符号说明**：
+- `L`：每 token 的 cross-entropy loss，单位是 nats/token。
+- `N`：非 embedding 参数量。
+- `N_c`：拟合得到的尺度常数。
+- `alpha_N`：模型规模缩放指数。
 
-##### Equation / Score 2: Dataset-size scaling
+##### 公式 2：数据规模缩放
 
 ```text
 L(D) = (D_c / D) ^ alpha_D
 alpha_D ~= 0.095, D_c ~= 5.4e13 tokens
 ```
 
-**Meaning**: If model size is not limiting and training is early-stopped, more unique training tokens reduce loss by a power law.
+**含义**：当模型规模不是瓶颈，并且训练采用 early stopping 时，更多独立训练 token 会以幂律方式降低 loss。
 
-##### Equation / Score 3: Optimized compute scaling
+##### 公式 3：优化后计算量缩放
 
 ```text
 L(C_min) = (C_c_min / C_min) ^ alpha_C_min
 alpha_C_min ~= 0.050, C_c_min ~= 3.1e8 PF-days
 ```
 
-**Meaning**: The best achievable loss under a compute budget follows a slower power law than either pure model-size or pure data-size scaling.
+**含义**：在给定计算预算下，最优可达到的 loss 也遵循幂律，但下降速度比单独扩大模型或数据更慢，因为计算量要在多个变量之间分配。
 
-##### Equation / Score 4: Joint model-data scaling
+##### 公式 4：模型-数据联合缩放
 
 ```text
 L(N, D) = [ (N_c / N) ^ (alpha_N / alpha_D) + (D_c / D) ] ^ alpha_D
 ```
 
-**Meaning**: Loss is modeled as a combined bottleneck from finite model size and finite data.
+**含义**：有限模型规模和有限数据规模共同构成 loss 瓶颈，可以用一个联合公式刻画。
 
-##### Equation / Score 5: Training-step scaling
+##### 公式 5：训练步数缩放
 
 ```text
 L(N, S_min) = (N_c / N) ^ alpha_N + (S_c / S_min) ^ alpha_S
 alpha_S ~= 0.76, S_c ~= 2.1e3 steps
 ```
 
-**Meaning**: At the critical-batch-size adjustment, finite optimization steps contribute an additive loss term.
+**含义**：在 critical-batch-size 修正后，有限优化步数会带来一个额外的 additive loss 项。
 
-##### Equation / Score 6: Critical batch size
+##### 公式 6：临界 batch size
 
 ```text
 B_crit(L) = B_star / L ^ (1 / alpha_B)
 alpha_B ~= 0.21, B_star ~= 2.1e8 tokens
 ```
 
-**Meaning**: Lower-loss regimes can use much larger batches before extra batch size becomes compute inefficient.
+**含义**：模型进入更低 loss 区域后，可以使用更大的 batch size，而不会显著损失计算效率。
 
-##### Equation / Score 7: Compute-efficient allocation
+##### 公式 7：计算最优资源分配
 
 ```text
 N_opt  proportional to C_min ^ 0.73
 B_crit proportional to C_min ^ 0.24
 S_min  proportional to C_min ^ 0.03
-D_opt  proportional to C_min ^ 0.27, for one epoch
+D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 ```
 
-**Meaning**: With more compute, the optimal response is mainly to train a much larger model, use a moderately larger batch/data budget, and increase serial steps only weakly.
+**含义**：随着计算预算增加，最优策略主要是训练更大的模型，同时适度增加 batch / 数据量；串行训练步数只应缓慢增加。
 
-#### 5.3 Algorithm Details
+#### 5.3 算法细节
 
 ```text
-Input:
-  A family of language models, training corpora, and compute budgets.
+输入：
+  一组语言模型、训练语料和计算预算。
 
-Steps:
-1. Train many models while varying non-embedding parameters N, dataset size D, batch size B, and training steps S.
-2. Measure held-out cross-entropy loss on WebText2 and several transfer corpora.
-3. Fit separate power laws for L(N), L(D), and L(C).
-4. Fit joint laws L(N,D) and L(N,S_min) to model simultaneous bottlenecks.
-5. Estimate B_crit(L) and adjust compute/steps to derive C_min.
-6. Solve for compute-efficient N, B, S, and one-epoch data D at a target compute budget.
+步骤：
+1. 训练大量模型，系统改变非 embedding 参数量 N、数据集大小 D、batch size B 和训练步数 S。
+2. 在 WebText2 与若干迁移语料上测量 held-out cross-entropy loss。
+3. 分别拟合 L(N)、L(D)、L(C) 的幂律关系。
+4. 拟合联合关系 L(N,D) 和 L(N,S_min)，刻画模型-数据瓶颈与模型-训练步数瓶颈。
+5. 估计 B_crit(L)，并对 compute / steps 做 critical-batch 修正，得到 C_min。
+6. 在目标计算预算下求解最优的 N、B、S 和单 epoch 数据规模 D。
 
-Output:
-  Predictive scaling equations and practical allocation rules for language-model pretraining.
+输出：
+  可预测语言模型预训练 loss 的 scaling law，以及可操作的资源分配规则。
 ```
 
-### 6. Data and Experimental Setup
+### 6. 数据与实验设置
 
-| Item | Details |
+| 项目 | 细节 |
 | --- | --- |
-| Training data | WebText2, an expanded WebText-style corpus with about 20.3M documents, 96GB text, 1.62e10 words, 2.29e10 BPE tokens, and 6.6e8 held-out test tokens. |
-| Evaluation data | WebText2 held-out data plus Books Corpus, Common Crawl, English Wikipedia, and Internet Books to test transfer of loss trends across distributions. |
-| Models | Decoder-only Transformers from roughly 768 to 1.5B non-embedding parameters; also LSTMs and recurrent/universal Transformer variants for comparison. |
-| Baselines | Smaller models, alternative shapes at fixed parameter count, LSTMs, recurrent/universal Transformer variants, and naive compute fits without critical-batch adjustment. |
-| Metrics | Cross-entropy loss in nats/token, overfitting ratio, critical batch size, adjusted compute `C_min`, training steps `S_min`, and fitted exponents. |
-| Compute | Training compute is estimated as approximately `6NBS` non-embedding FLOPs; compute is reported in PF-days. Main runs use context length 1024 and large token batches. |
-| Reproducibility assets | Paper gives many equations and hyperparameter summaries, but no official code, public WebText2 release, or full run logs/checkpoints. |
+| 训练数据 | WebText2，一个扩展版 WebText 风格语料，约 2030 万文档、96GB 文本、1.62e10 words、2.29e10 BPE tokens，并保留 6.6e8 tokens 作为测试集。 |
+| 评估数据 | WebText2 held-out 数据，以及 Books Corpus、Common Crawl、English Wikipedia、Internet Books，用于测试 loss 趋势是否能跨分布迁移。 |
+| 模型 | Decoder-only Transformer，非 embedding 参数量约从 768 到 1.5B；另比较 LSTM 与 recurrent / universal Transformer 变体。 |
+| 基线 | 更小模型、固定参数量下不同 depth/width/head 形状、LSTM、recurrent/universal Transformer，以及未做 critical-batch 修正的 naive compute fit。 |
+| 指标 | nats/token 的 cross-entropy loss、过拟合比例、critical batch size、修正后的计算量 `C_min`、训练步数 `S_min`、拟合指数。 |
+| 计算量 | 训练计算近似为 `6NBS` 非 embedding FLOPs，以 PF-days 报告；主实验使用 context length 1024 和较大的 token batch。 |
+| 可复现资产 | 论文给出了公式、拟合结果和部分超参数，但没有发布官方代码、WebText2 语料、完整 run logs 或 checkpoints。 |
 
-### 7. Figures, Tables, and Evidence
+### 7. 图表与证据
 
-#### Figure Checklist
+#### 图清单
 
-| Figure | What It Shows | Key Takeaway | Data-Quality Relevance |
+| 图 | 展示内容 | 关键结论 | 与数据质量的关系 |
 | --- | --- | --- | --- |
-| Figure 1 | Loss versus compute, dataset size, and parameter count. | All three axes follow clean power-law trends. | Data size is not merely an implementation detail; it is a predictable quality constraint. |
-| Figure 2 | Sample efficiency across model sizes. | Larger models need fewer examples to reach the same loss. | More parameters can make each token more valuable, complicating simple "more data is always better" rules. |
-| Figure 3 | Compute-efficient allocation as compute increases. | Model size grows fastest, batch/data grows moderately, serial steps grow slowly. | Pretraining-data planning should scale corpus and batch policy together with model scale. |
-| Figure 4 | Joint fits for `L(N,D)` and `L(N,S_min)`. | Two-variable laws explain model-data and model-step bottlenecks. | Provides a way to diagnose whether a run is data-limited or model-limited. |
-| Figure 5 | Loss across architecture shape variants. | Depth, width, and head-count choices matter less than total non-embedding scale. | Reduces the risk of attributing data or scale effects to architecture tweaks. |
-| Figure 6 | Total parameters versus non-embedding parameters. | Non-embedding parameters collapse the trend more cleanly. | Embedding-heavy small models can distort scaling measurements. |
-| Figure 7 | Transformer and LSTM comparisons. | Transformers outperform mainly through longer usable context. | Context length changes what information the data can expose to the model. |
-| Figure 8 | Evaluation on other text distributions. | Transfer losses track WebText2 loss with roughly constant offsets. | Domain quality can be modeled as an offset, but not fully explained. |
-| Figure 9 | Finite data bottleneck and overfitting. | Repeated data eventually limits loss; overfitting grows predictably. | Useful for deciding when deduplication and fresh-token acquisition matter. |
-| Figure 10 | Critical batch size versus loss. | `B_crit` increases as loss improves. | Batch policy affects how efficiently tokens are consumed. |
-| Figure 11 | Fixed-compute and fixed-step tradeoffs. | Loss follows the fitted `L(N,S_min)` relation across regimes. | Helps separate optimization insufficiency from data insufficiency. |
-| Figure 12 | Cost of suboptimal model sizes. | Being within a modest range of optimal size has small compute penalty. | Gives a tolerance band for practical corpus/model co-design. |
-| Figure 13 | Adjusted compute scaling. | `L(C_min)` is cleaner after critical-batch adjustment. | Data-quality budgets should be compared under compute-efficient training assumptions. |
-| Figure 14 | Optimal model size and minimum steps versus compute. | `N_opt` grows rapidly while `S_min` barely grows. | Signals that data and model-scale planning should happen before long-run training. |
-| Figure 15 | Extrapolated contradiction between compute and data laws. | Compute scaling eventually collides with a data-limited frontier. | Anticipates the central modern question: where do high-quality tokens come from? |
-| Figure 16 | Early stopping and overfitting lower bound. | The fitted laws predict when overfitting should start. | Can inform corpus refresh and repeated-token limits. |
-| Figure 17 | Recurrent/universal Transformer variants. | Alternative recurrence choices do not overturn the scale story. | Scale effects remain stronger than these architectural variants. |
-| Figure 18 | Critical batch-size fits. | Empirical fits support `B_crit(L)` across model sizes. | Validates the batch-size correction used in compute/data allocation. |
-| Figure 19 | Minimum steps for fixed loss. | Larger models require fewer minimum serial steps at fixed target loss. | Supports the claim that larger models are more sample efficient. |
+| Figure 1 | loss 随 compute、dataset size、parameter count 的变化。 | 三个维度都呈现清晰幂律趋势。 | 数据规模不是实现细节，而是可预测的质量约束。 |
+| Figure 2 | 不同模型规模下的 sample efficiency。 | 大模型达到同样 loss 需要更少样本。 | 参数规模会改变每个 token 的价值，不能简单说“数据越多越好”。 |
+| Figure 3 | 计算预算增加时的最优资源分配。 | 模型规模增长最快，batch / 数据适度增长，串行步数增长很慢。 | 预训练数据规划要和模型规模、batch 策略一起设计。 |
+| Figure 4 | `L(N,D)` 与 `L(N,S_min)` 的联合拟合。 | 两变量公式能解释模型-数据瓶颈和模型-训练步数瓶颈。 | 可用于判断一次训练是 data-limited 还是 model-limited。 |
+| Figure 5 | 不同架构形状下的 loss。 | depth、width、head 数的影响弱于总非 embedding 参数量。 | 避免把数据或规模效应误判为架构效果。 |
+| Figure 6 | total parameters 与 non-embedding parameters 的比较。 | 非 embedding 参数能更好地 collapse scaling trend。 | embedding 占比高的小模型会扭曲 scaling 测量。 |
+| Figure 7 | Transformer 与 LSTM 的比较。 | Transformer 主要因为能利用更长上下文而优于 LSTM。 | context length 会改变数据中可被模型利用的信息范围。 |
+| Figure 8 | 在其他文本分布上的评估。 | 迁移语料 loss 与 WebText2 loss 大体保持固定偏移。 | 领域质量可被视为 offset，但无法完全解释。 |
+| Figure 9 | 有限数据瓶颈与过拟合。 | 重复数据最终会限制 loss；过拟合程度可预测。 | 可指导 deduplication、fresh-token 获取和数据复用上限。 |
+| Figure 10 | critical batch size 与 loss 的关系。 | `B_crit` 随 loss 降低而增大。 | batch 策略会影响 token 消耗效率。 |
+| Figure 11 | 固定 compute / 固定 steps 的权衡。 | loss 遵循拟合出的 `L(N,S_min)` 关系。 | 有助于区分优化不足和数据不足。 |
+| Figure 12 | 非最优模型规模的代价。 | 在最优规模附近偏离不大时，计算惩罚较小。 | 给实际模型-语料协同设计一个容忍区间。 |
+| Figure 13 | 修正后的 compute scaling。 | 做 critical-batch 修正后，`L(C_min)` 更干净。 | 比较数据质量预算时应使用 compute-efficient 假设。 |
+| Figure 14 | 最优模型规模和最小步数随 compute 的变化。 | `N_opt` 快速增长，而 `S_min` 几乎不增长。 | 说明应在长训练前先做好数据和模型规模规划。 |
+| Figure 15 | compute law 与 data law 的外推冲突。 | compute scaling 最终会撞上 data-limited frontier。 | 提前提出现代预训练的核心问题：高质量 token 从哪里来？ |
+| Figure 16 | early stopping 与过拟合下界。 | 拟合公式可预测过拟合何时开始。 | 可辅助决定语料刷新和重复 token 限制。 |
+| Figure 17 | recurrent / universal Transformer 变体。 | 这些替代架构没有推翻 scale 主导结论。 | scale 效应仍强于这些架构变体。 |
+| Figure 18 | critical batch-size 拟合。 | 实证支持跨模型规模的 `B_crit(L)`。 | 验证了资源分配公式中的 batch-size 修正。 |
+| Figure 19 | 达到固定 loss 所需的最小串行步数。 | 大模型达到相同 loss 需要更少最小步数。 | 支持“大模型更 sample-efficient”的结论。 |
 
-#### Table Checklist
+#### 表清单
 
-| Table | What It Reports | Best / Worst Result | Interpretation |
+| 表 | 报告内容 | 关键数值 | 解读 |
 | --- | --- | --- | --- |
-| Table 1 | Transformer parameter and FLOP estimates. | Training compute is approximated by `C ~= 6NBS`. | Defines the compute accounting used throughout the paper. |
-| Table 2 | Fitted `L(N,D)` values. | `alpha_N ~= 0.076`, `alpha_D ~= 0.103` in this fit. | Joint model-data scaling can explain finite-data effects. |
-| Table 3 | Fitted `L(N,S)` values. | `alpha_S ~= 0.76`, `S_c ~= 2.1e3`. | Optimization-step bottlenecks are much steeper than model/data exponents. |
-| Table 4 | Summary of power-law equations. | Lists laws for `N`, `D`, `C`, `C_min`, `L(N,D)`, and `L(N,S)`. | Useful compact reference for future note writers. |
-| Table 5 | Empirical fitted exponents and scale constants. | `alpha_N=0.076`, `alpha_D=0.095`, `alpha_C_min=0.050`, `alpha_B=0.21`, `alpha_S=0.76`. | The exponents are the paper's main reusable numbers. |
-| Table 6 | Compute-efficient allocations. | `p_N=0.73`, `p_B=0.24`, `p_S=0.03`, `p_D=0.27`. | Converts scaling laws into training-run design rules. |
+| Table 1 | Transformer 参数量与 FLOPs 估计。 | 训练计算近似为 `C ~= 6NBS`。 | 定义了全文使用的 compute accounting。 |
+| Table 2 | `L(N,D)` 的拟合值。 | 该拟合中 `alpha_N ~= 0.076`，`alpha_D ~= 0.103`。 | 联合模型-数据 scaling 能解释有限数据效应。 |
+| Table 3 | `L(N,S)` 的拟合值。 | `alpha_S ~= 0.76`，`S_c ~= 2.1e3`。 | 优化步数瓶颈比模型 / 数据指数陡得多。 |
+| Table 4 | 幂律公式汇总。 | 汇总 `N`、`D`、`C`、`C_min`、`L(N,D)`、`L(N,S)`。 | 是后续阅读和复用公式的快速索引。 |
+| Table 5 | 经验拟合指数与尺度常数。 | `alpha_N=0.076`，`alpha_D=0.095`，`alpha_C_min=0.050`，`alpha_B=0.21`，`alpha_S=0.76`。 | 这些指数是论文最可复用的核心数字。 |
+| Table 6 | 计算最优训练的资源分配。 | `p_N=0.73`，`p_B=0.24`，`p_S=0.03`，`p_D=0.27`。 | 把 scaling law 转化为训练 run 的设计规则。 |
 
-### 8. Main Results
+### 8. 主要结果
 
-- **Result 1**: Loss follows power laws in `N`, `D`, and `C_min` across many orders of magnitude, with diminishing returns along each axis.
-- **Result 2**: Compute-efficient training favors larger models trained for fewer steps relative to convergence; converging smaller models is inefficient.
-- **Result 3**: The dataset size required to avoid overfitting grows sublinearly with model size, approximately `D >= 5e3 * N^0.74` for the paper's chosen tolerance.
-- **Result 4**: Architecture shape matters weakly compared with non-embedding parameter count.
-- **Result 5**: Transfer distributions show similar loss trends with domain-specific offsets, suggesting that the scaling variable is not purely WebText2-specific.
-- **Ablation insight**: Excluding embeddings makes the parameter scaling cleaner, especially for small models where vocabulary embeddings dominate.
-- **Negative result**: The paper does not find a sharp "jamming transition" where model size reaches dataset size under its early-stopping regime.
+- **结果 1**：`N`、`D` 和 `C_min` 跨多个数量级都遵循幂律下降，每个维度都存在 diminishing returns。
+- **结果 2**：计算最优训练倾向于使用更大模型并训练更少步；把小模型训练到收敛通常不是最省计算的做法。
+- **结果 3**：避免明显过拟合所需的数据规模随模型规模次线性增长，论文给出的经验阈值约为 `D >= 5e3 * N^0.74`。
+- **结果 4**：架构形状的影响弱于非 embedding 参数量，scale 是更主要的解释变量。
+- **结果 5**：其他文本分布的 loss 与 WebText2 loss 呈相似趋势并带有领域 offset，说明 scaling 变量不完全是 WebText2 特有现象。
+- **消融洞察**：排除 embedding 参数后，参数量 scaling 更干净，尤其对小模型更重要，因为小模型中 vocabulary embedding 占比较高。
+- **负结果**：在该论文的 early-stopping 设置下，没有观察到当模型规模接近数据规模时出现尖锐的 “jamming transition”。
 
-### 9. Data Quality Angle
+### 9. 数据质量视角
 
-#### 9.1 What Quality Means in This Paper
+#### 9.1 本文中的“质量”是什么意思
 
-The paper does not define data quality as toxicity, factuality, duplication, or semantic richness. Instead, it treats corpus quality implicitly through the ability of tokens to reduce held-out cross-entropy under a fixed model and compute budget. In this view, high-quality pretraining data is data that shifts the loss frontier downward or delays the point where repeated tokens create a finite-data bottleneck.
+这篇论文没有把数据质量定义为毒性、事实性、重复度或语义丰富度。它隐含地把语料质量定义为：在固定模型规模和计算预算下，token 能够降低 held-out cross-entropy 的能力。按这个视角，高质量预训练数据应当能够把 loss frontier 往下移，或者推迟重复 token 导致的数据瓶颈。
 
-#### 9.2 Quality Signals
+#### 9.2 质量信号
 
-| Signal | How It Is Measured | Strength | Weakness |
+| 信号 | 如何测量 | 优点 | 弱点 |
 | --- | --- | --- | --- |
-| Predictive loss | Held-out cross-entropy on WebText2 and transfer corpora. | Smooth, quantitative, and comparable across scales. | Can hide toxicity, factuality, duplication, and downstream capability failures. |
-| Dataset-size bottleneck | `L(D)` and `L(N,D)` fits. | Makes finite-data limitations measurable. | Counts tokens rather than measuring token uniqueness or information density directly. |
-| Overfitting ratio | `L(N,D) / L(N,infinity) - 1`. | Gives an operational repeated-data warning. | Depends on early-stopping and corpus distribution. |
-| Domain offset | Evaluation loss on other corpora as a function of WebText2 loss. | Shows whether pretraining improvements transfer. | Does not identify which documents or domains cause the offset. |
-| Critical batch size | Empirical `B_crit(L)` fits. | Connects optimization efficiency to data consumption rate. | Far extrapolation is uncertain and sensitive to optimization assumptions. |
+| 预测性 loss | WebText2 与迁移语料上的 held-out cross-entropy。 | 平滑、量化、可跨 scale 比较。 | 会掩盖毒性、事实错误、重复和下游能力问题。 |
+| 数据规模瓶颈 | `L(D)` 与 `L(N,D)` 拟合。 | 让有限数据限制变得可测量。 | 只数 token，不直接衡量 token 唯一性或信息密度。 |
+| 过拟合比例 | `L(N,D) / L(N,infinity) - 1`。 | 给出可操作的数据复用警戒线。 | 依赖 early stopping 和语料分布。 |
+| 领域 offset | 其他语料 loss 相对 WebText2 loss 的偏移。 | 能看出预训练改进是否跨领域迁移。 | 无法指出哪些文档或领域造成偏移。 |
+| critical batch size | 经验拟合 `B_crit(L)`。 | 把优化效率和数据消耗速度连接起来。 | 远距离外推不稳，且依赖优化假设。 |
 
-#### 9.3 Quality Improvement Operation
+#### 9.3 质量提升操作
 
-| Operation | Target Data | Expected Benefit | Possible Side Effect |
+| 操作 | 目标数据 | 预期收益 | 潜在副作用 |
 | --- | --- | --- | --- |
-| Acquire fresh tokens | Pretraining corpus | Avoid data-limited scaling and overfitting. | More raw web tokens may add noise, toxicity, or duplicates if not filtered. |
-| Deduplicate and control reuse | Repeated documents or tokens | Preserve effective dataset size and reduce memorization pressure. | Aggressive deduplication may remove useful recurring patterns or minority-domain coverage. |
-| Domain balancing | Web, books, Wikipedia, common crawl-like data | Reduce transfer offsets and improve generalization. | Better average loss may still underperform on rare or safety-critical slices. |
-| Compute-aware data scheduling | Token batches and epochs | Spend tokens where marginal loss reduction is highest. | The paper does not provide a direct per-example selection rule. |
+| 获取新鲜 token | 预训练语料 | 避免 data-limited scaling 和过拟合。 | 原始 web token 可能引入噪声、毒性和重复。 |
+| 去重与复用控制 | 重复文档或重复 token | 保持有效数据规模，降低记忆化压力。 | 过度去重可能移除有用的重复模式或小众领域覆盖。 |
+| 领域平衡 | web、books、Wikipedia、Common Crawl 风格数据 | 降低迁移 offset，改善泛化。 | 平均 loss 更好不代表稀有或安全关键 slice 更好。 |
+| compute-aware 数据调度 | token batch 与 epoch | 把 token 花在边际 loss 收益更高的位置。 | 论文没有提供直接的单样本选择规则。 |
 
-### 10. Critical Assessment
+### 10. 批判性评估
 
-#### Strengths
+#### 优点
 
-1. The study gives a compact predictive framework rather than a loose empirical trend, with equations for model-size, data-size, compute, batch, and training-step effects.
-2. The experiments explicitly test architecture shape, transfer corpora, finite data, and batch-size adjustment instead of reporting only one scaling curve.
-3. The fitted allocation law is practically actionable: it tells a training team whether to buy more data, scale parameters, or run longer.
+1. 论文给出的不是松散经验趋势，而是覆盖模型规模、数据规模、计算量、batch 和训练步数的紧凑预测框架。
+2. 实验不仅报告一条 scaling curve，还检查了架构形状、迁移语料、有限数据和 batch-size 修正。
+3. 拟合出的资源分配规律具有直接工程意义：它告诉训练团队下一步应更多投入数据、参数还是训练时长。
 
-#### Limitations
+#### 局限
 
-1. WebText2 is not released as a full reproducible dataset, so exact data effects cannot be independently audited.
-2. The largest empirical models are about 1.5B non-embedding parameters, so trillion-parameter and trillion-token conclusions are extrapolations.
-3. Data quality is reduced to language-model loss; the paper does not measure toxicity, factuality, social bias, provenance, deduplication quality, or benchmark contamination.
-4. Later work, especially compute-optimal studies such as Chinchilla, found different parameter-token tradeoffs under larger runs and different datasets, so the allocation exponents should not be treated as timeless constants.
+1. WebText2 没有作为完整可复现数据集发布，因此无法独立审计精确的数据效应。
+2. 最大实证模型约为 1.5B 非 embedding 参数，关于万亿参数 / 万亿 token 的结论属于外推。
+3. 数据质量被压缩为语言模型 loss；论文没有测量毒性、事实性、社会偏见、数据来源、去重质量或 benchmark contamination。
+4. 后续工作，尤其是 Chinchilla 一类 compute-optimal 研究，在更大规模与不同数据下得到不同的参数-token 权衡，因此本文的分配指数不能被当作永恒常数。
 
-#### Failure Modes and Risks
+#### 失败模式与风险
 
-- **Metric gaming**: Optimizing only cross-entropy could favor common, easy-to-predict text while ignoring factuality, reasoning diversity, or safety.
-- **Bias or coverage loss**: Domain offsets show transfer variation, but the paper does not audit demographic, linguistic, or topic coverage.
-- **Toxicity / safety regression**: Toxic content is not measured, so lower loss could still come with unsafe generation behavior.
-- **Data contamination**: Benchmark contamination is not a central evaluation target.
-- **Overfitting to judge / benchmark**: The main judge is held-out loss, which can understate memorization and exact-overlap issues.
-- **Generalization across domains or languages**: The work is mostly English text; cross-lingual and multimodal scaling remain open.
+- **指标投机**：只优化 cross-entropy 可能偏向常见、易预测文本，忽略事实性、推理多样性或安全性。
+- **偏见或覆盖损失**：领域 offset 能显示迁移差异，但论文没有审计人口、语言或主题覆盖。
+- **毒性 / 安全退化**：未测量有害内容，因此更低 loss 仍可能伴随不安全生成行为。
+- **数据污染**：benchmark contamination 不是该论文的主要评测对象。
+- **对 judge / benchmark 过拟合**：主要 judge 是 held-out loss，可能低估记忆化和精确重合问题。
+- **跨领域或跨语言泛化**：研究主要是英文文本，跨语言和多模态 scaling 仍然开放。
 
-### 11. Reproducibility Assessment
+### 11. 可复现性评估
 
-| Item | Status | Notes |
+| 项目 | 状态 | 说明 |
 | --- | --- | --- |
-| Code released | No | No official training/evaluation code is linked in the paper. |
-| Data released | No | WebText2 is described but not released as a reproducible corpus. |
-| Data recipe released | Partial | The WebText-style construction and corpus scale are described, but exact crawl/filter details are insufficient for exact recreation. |
-| Prompts / annotation guide released | N/A | This is unsupervised language-model pretraining. |
-| Hyperparameters released | Partial | The paper reports architecture families, optimizer choices, context length, batch settings, and several training details. |
-| Compute reported | Partial | Compute is estimated analytically and reported in PF-days, but raw training logs are not released. |
-| Contamination checks | No | The paper evaluates transfer loss but does not present modern contamination auditing. |
+| 是否发布代码 | 否 | 论文没有链接官方训练 / 评估代码。 |
+| 是否发布数据 | 否 | WebText2 被描述了，但没有以可复现语料形式发布。 |
+| 是否发布数据配方 | 部分 | 描述了 WebText-style 构建和语料规模，但精确 crawl / filter 细节不足。 |
+| prompt / 标注指南 | N/A | 这是无监督语言模型预训练。 |
+| 超参数 | 部分 | 报告了模型族、优化器、context length、batch 设置和若干训练细节。 |
+| 计算量 | 部分 | 以公式估算并报告 PF-days，但没有发布原始训练日志。 |
+| contamination 检查 | 否 | 论文做了迁移 loss 评估，但没有现代意义上的污染审计。 |
 
-### 12. Relation to Other Papers
+### 12. 与其他论文的关系
 
-- **Builds on**:
-  - Hestness et al., 2017: earlier neural scaling-law observations.
-  - McCandlish et al., 2018: critical batch size and gradient-noise-scale ideas.
-- **Compared with**:
-  - Training Compute-Optimal Large Language Models: later Chinchilla work revises the compute-optimal parameter-token balance and argues for many more training tokens relative to model size.
-  - Data Mixing Laws: extends the scaling-law mindset from total token count to domain mixture composition.
-- **Contradicts or complicates**:
-  - Simple "train to convergence" practice: the paper argues that convergence of small models is compute inefficient.
-  - Simple "bigger dataset is always the main lever" intuition: the paper argues that larger models can be more sample efficient.
-- **Should be read with**:
-  - Scaling Data-Constrained Language Models: for what happens when fresh high-quality tokens are scarce.
-  - DataComp-LM: for dataset construction and quality evaluation under controlled corpus recipes.
-  - Dolma / FineWeb: for modern large-scale corpus design, filtering, and documentation.
+- **建立在以下工作之上**：
+  - Hestness et al., 2017：更早的神经网络 scaling law 观察。
+  - McCandlish et al., 2018：critical batch size 与 gradient noise scale 相关思想。
+- **可对比论文**：
+  - Training Compute-Optimal Large Language Models：后续 Chinchilla 工作修正了 compute-optimal 参数-token 平衡，并主张相对模型规模应使用更多训练 token。
+  - Data Mixing Laws：把 scaling-law 思路从总 token 数扩展到领域 mixture 配比。
+- **挑战或复杂化的直觉**：
+  - 简单“训练到收敛”的做法：本文认为把小模型训练到收敛并不计算高效。
+  - 简单“更大数据集永远是主杠杆”的直觉：本文认为大模型本身也会提高 sample efficiency。
+- **建议一起阅读**：
+  - Scaling Data-Constrained Language Models：理解高质量 fresh tokens 稀缺时会发生什么。
+  - DataComp-LM：理解受控语料配方下的数据构建与质量评估。
+  - Dolma / FineWeb：理解现代大规模语料设计、过滤和文档化。
 
-### 13. Implications for Our Research
+### 13. 对我们研究的启发
 
-- **Useful idea to borrow**: Treat data quality interventions as frontier shifts. A filter, deduplication method, or data selector is valuable if it improves the loss/capability frontier at fixed `N`, `D`, and `C`.
-- **Potential baseline**: Use the paper's `L(N,D)` form as a null model for whether a data-quality method beats simple token-count scaling.
-- **Potential metric**: Effective-token value, measured as the loss improvement of a curated subset relative to an equal-size random subset.
-- **Potential dataset or benchmark**: Construct WebText-like controlled corpora with explicit metadata for toxicity, deduplication, domain, knowledge density, and semantic consistency.
-- **Experiment we should run**: For a fixed compute budget, compare random tokens, filtered high-quality tokens, deduplicated tokens, and domain-balanced tokens, then fit whether each intervention changes `alpha_D`, `D_c`, or only the intercept.
-- **Open question created by this paper**: Can semantic quality and safety filters shift scaling laws, or do they mainly change downstream behavior at similar loss?
+- **可借鉴思想**：把数据质量干预理解为 frontier shift。过滤、去重或选择方法是否有价值，应看它能否在固定 `N`、`D`、`C` 下改善 loss / capability frontier。
+- **潜在 baseline**：用本文的 `L(N,D)` 形式作为 null model，检验某种数据质量方法是否超过简单 token-count scaling。
+- **潜在指标**：有效 token 价值，即一个 curated subset 相对同等规模 random subset 的 loss 改善。
+- **潜在数据集或 benchmark**：构建 WebText-like 受控语料，并显式记录 toxicity、deduplication、domain、knowledge density 和 semantic consistency 元数据。
+- **应做实验**：在固定计算预算下，比较 random tokens、高质量过滤 tokens、去重 tokens 和领域平衡 tokens，再拟合这些干预改变的是 `alpha_D`、`D_c` 还是仅仅改变截距。
+- **本文带来的开放问题**：语义质量和安全过滤能否改变 scaling law，还是主要在相似 loss 下改变下游行为？
 
-### 14. Open Questions
+### 14. 开放问题
 
-1. How do the fitted exponents change under modern corpora with stronger filtering, deduplication, and contamination controls?
-2. Can we replace raw token count `D` with an "effective information density" measure that better predicts loss and downstream transfer?
-3. How should scaling laws incorporate toxic content, factual inconsistency, privacy risk, and benchmark leakage rather than only held-out loss?
-4. Do post-training data quality metrics obey similarly smooth laws, or are they more task- and judge-dependent?
-5. Which data-quality operations shift the intercept versus the exponent of the scaling curve?
+1. 在现代强过滤、强去重、强污染控制的语料上，这些拟合指数会如何变化？
+2. 能否用“有效信息密度”替代原始 token 数 `D`，更好预测 loss 和下游迁移？
+3. scaling law 应该如何纳入毒性、事实不一致、隐私风险和 benchmark leakage，而不只是 held-out loss？
+4. 后训练数据质量指标是否也遵循类似平滑规律，还是更依赖任务和 judge？
+5. 哪些数据质量操作会改变 scaling curve 的截距，哪些会改变指数？
 
-### 15. Note Completion Checklist
+### 15. 笔记完成清单
 
-- [x] Original link is included.
-- [x] README `阅读笔记` link points to this completed note anchor.
-- [x] Primary taxonomy category is filled.
-- [x] Cross-tags are filled when the paper spans multiple branches.
-- [x] All required template sections are kept.
-- [x] All important equations or scoring rules are captured.
-- [x] All main figures are summarized.
-- [x] All main tables are summarized.
-- [x] Data, models, metrics, and baselines are recorded.
-- [x] Data-quality angle is explicit.
-- [x] Limitations and failure modes are explicit.
-- [x] Reproducibility status is assessed.
+- [x] 已包含原文链接。
+- [x] README `阅读笔记` 链接指向本篇完成笔记锚点。
+- [x] 已填写主要 taxonomy category。
+- [x] 已填写跨分支标签。
+- [x] 保留了模板要求的全部章节。
+- [x] 已记录重要公式和评分规则。
+- [x] 已总结主要 figures。
+- [x] 已总结主要 tables。
+- [x] 已记录数据、模型、指标和 baseline。
+- [x] 已明确数据质量视角。
+- [x] 已明确局限与失败模式。
+- [x] 已评估可复现性。
 
 <a id="training-compute-optimal-large-language-models"></a>
 ## Training Compute-Optimal Large Language Models
