@@ -40,6 +40,8 @@ Use [docs/taxonomy.md](docs/taxonomy.md) to choose one primary taxonomy category
 
 If the resource is mainly a tool, dataset, benchmark, or modality-specific application, use the closest README subsection and add cross-tags such as `B2 LLM pretraining data selection`, `B6 filtering/cleaning/deduplication`, or `C2 semantic consistency`.
 
+For a careful paper read, expand the lightweight entry with [docs/paper-note-template.md](docs/paper-note-template.md). The full template is designed for deep notes that capture equations, figures, tables, data-quality signals, limitations, and reproducibility.
+
 Prefer stable links in this order:
 
 1. Publisher or conference page

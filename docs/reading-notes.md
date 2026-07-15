@@ -4,6 +4,8 @@ This file provides a reading-note entry point for each paper or paper-like resou
 
 Each note is intentionally lightweight at first. Expand the sections as papers are read in detail.
 
+For careful reading, use the high-quality template in [paper-note-template.md](paper-note-template.md). Every completed note should include the original paper link, a stable reading-note anchor, taxonomy placement, method or metric details, evidence, data-quality angle, limitations, and reproducibility assessment.
+
 <a id="data-centric-artificial-intelligence"></a>
 ## Data-Centric Artificial Intelligence
 

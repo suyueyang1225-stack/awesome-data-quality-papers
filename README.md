@@ -70,6 +70,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - [Research Roadmap](#research-roadmap) - open problems and research agenda.
 - [Contribution Guide](#contribution-guide) - how to add papers and notes.
 - [Reading Notes](docs/reading-notes.md) - structured notes for listed papers.
+- [Paper Note Template](docs/paper-note-template.md) - high-quality template for careful paper reading.
 
 ## General Surveys
 
@@ -263,6 +264,8 @@ When adding a paper, prefer this format:
 ```markdown
 - **Paper Title** - [原文](paper-url) · [阅读笔记](docs/reading-notes.md#paper-title-anchor) - One-sentence summary focused on data quality evaluation or improvement. Optional: [Code](code-url), [Dataset](dataset-url).
 ```
+
+For detailed paper reading, expand the lightweight note with [docs/paper-note-template.md](docs/paper-note-template.md).
 
 ## Related Awesome Lists
 
