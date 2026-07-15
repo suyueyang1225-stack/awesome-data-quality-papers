@@ -23,4 +23,14 @@ For completed paper-reading notes:
 
 - [ ] README links still work.
 - [ ] New paper entries link `阅读笔记` to `docs/paper-note-template.md`.
+- [ ] New paper entries include a `PPT` link to `docs/ppts/README.md`.
 - [ ] The note follows the taxonomy in `docs/taxonomy.md`.
+
+## PPT Checklist
+
+For PPT uploads:
+
+- [ ] The source `.pptx` is uploaded under `docs/ppts/files/`.
+- [ ] The PDF preview is uploaded under `docs/ppts/previews/`.
+- [ ] The matching row in `docs/ppts/README.md` links both files.
+- [ ] The README paper entry links to the matching PPT row.

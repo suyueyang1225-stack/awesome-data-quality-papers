@@ -17,6 +17,9 @@ assignees: ""
 - Cross-tags:
 - Code:
 - Dataset:
+- PPT anchor:
+- PPTX path: docs/ppts/files/{paper-anchor}.pptx
+- Preview PDF path: docs/ppts/previews/{paper-anchor}.pdf
 
 ## Why It Belongs Here
 
@@ -28,6 +31,12 @@ Explain how this resource helps evaluate or improve data quality.
 - Reading status: not started / in progress / completed
 - I will use `docs/paper-note-template.md` for the completed note: yes / no
 - Sections expected to be `N/A` and why:
+
+## PPT Plan
+
+- PPT owner:
+- PPT status: not started / in progress / uploaded
+- Preview PDF status: not started / in progress / uploaded
 
 ## Suggested Section
 

@@ -16,10 +16,11 @@ Good additions usually satisfy at least one of these criteria:
 Use concise, research-oriented summaries:
 
 ```markdown
-- **Title** - [原文](paper-url) · [阅读笔记](docs/paper-note-template.md) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
+- **Title** - [原文](paper-url) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#title-anchor) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
 ```
 
 All paper entries should link `阅读笔记` to `docs/paper-note-template.md` unless the repository later adds a dedicated completed-note file for that specific paper.
+All paper entries should also link `PPT` to the matching row in [docs/ppts/README.md](docs/ppts/README.md).
 
 ## Required Reading Note Standard
 
@@ -62,6 +63,19 @@ Use [docs/taxonomy.md](docs/taxonomy.md) to choose one primary taxonomy category
 If the resource is mainly a tool, dataset, benchmark, or modality-specific application, use the closest README subsection and add cross-tags such as `B2 LLM pretraining data selection`, `B6 filtering/cleaning/deduplication`, or `C2 semantic consistency`.
 
 For a careful paper read, copy the full structure from [docs/paper-note-template.md](docs/paper-note-template.md) and fill it completely.
+
+## PPT Upload and Preview Standard
+
+Every paper should have a PPT entrance in [docs/ppts/README.md](docs/ppts/README.md).
+
+For completed slides:
+
+- Upload the editable deck to `docs/ppts/files/{paper-anchor}.pptx`.
+- Export the same deck to PDF and upload it to `docs/ppts/previews/{paper-anchor}.pdf`.
+- Update the matching row in `docs/ppts/README.md` from `TBD` to links for both files.
+- Keep the `.pptx` for editing and the `.pdf` for GitHub preview.
+
+Use the same `{paper-anchor}` as the README `PPT` link.
 
 Prefer stable links in this order:
 
