@@ -1,5 +1,7 @@
 # Paper Reading Note Template
 
+Main note index: [Reading Notes](reading-notes.md)
+
 Use this template for high-quality paper notes in this repository. It is adapted from the `paper-reader` workflow and customized for data quality evaluation and improvement research.
 
 Every completed note should answer four questions:
