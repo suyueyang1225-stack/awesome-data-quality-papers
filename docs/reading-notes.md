@@ -1458,44 +1458,7 @@ D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 | 计算量 | 训练计算近似为 `6NBS` 非 embedding FLOPs，以 PF-days 报告；主实验使用 context length 1024 和较大的 token batch。 |
 | 可复现资产 | 论文给出了公式、拟合结果和部分超参数，但没有发布官方代码、WebText2 语料、完整 run logs 或 checkpoints。 |
 
-### 7. 图表与证据
-
-#### 图清单
-
-| 图 | 展示内容 | 关键结论 | 与数据质量的关系 |
-| --- | --- | --- | --- |
-| Figure 1 | loss 随 compute、dataset size、parameter count 的变化。 | 三个维度都呈现清晰幂律趋势。 | 数据规模不是实现细节，而是可预测的质量约束。 |
-| Figure 2 | 不同模型规模下的 sample efficiency。 | 大模型达到同样 loss 需要更少样本。 | 参数规模会改变每个 token 的价值，不能简单说“数据越多越好”。 |
-| Figure 3 | 计算预算增加时的最优资源分配。 | 模型规模增长最快，batch / 数据适度增长，串行步数增长很慢。 | 预训练数据规划要和模型规模、batch 策略一起设计。 |
-| Figure 4 | `L(N,D)` 与 `L(N,S_min)` 的联合拟合。 | 两变量公式能解释模型-数据瓶颈和模型-训练步数瓶颈。 | 可用于判断一次训练是 data-limited 还是 model-limited。 |
-| Figure 5 | 不同架构形状下的 loss。 | depth、width、head 数的影响弱于总非 embedding 参数量。 | 避免把数据或规模效应误判为架构效果。 |
-| Figure 6 | total parameters 与 non-embedding parameters 的比较。 | 非 embedding 参数能更好地 collapse scaling trend。 | embedding 占比高的小模型会扭曲 scaling 测量。 |
-| Figure 7 | Transformer 与 LSTM 的比较。 | Transformer 主要因为能利用更长上下文而优于 LSTM。 | context length 会改变数据中可被模型利用的信息范围。 |
-| Figure 8 | 在其他文本分布上的评估。 | 迁移语料 loss 与 WebText2 loss 大体保持固定偏移。 | 领域质量可被视为 offset，但无法完全解释。 |
-| Figure 9 | 有限数据瓶颈与过拟合。 | 重复数据最终会限制 loss；过拟合程度可预测。 | 可指导 deduplication、fresh-token 获取和数据复用上限。 |
-| Figure 10 | critical batch size 与 loss 的关系。 | `B_crit` 随 loss 降低而增大。 | batch 策略会影响 token 消耗效率。 |
-| Figure 11 | 固定 compute / 固定 steps 的权衡。 | loss 遵循拟合出的 `L(N,S_min)` 关系。 | 有助于区分优化不足和数据不足。 |
-| Figure 12 | 非最优模型规模的代价。 | 在最优规模附近偏离不大时，计算惩罚较小。 | 给实际模型-语料协同设计一个容忍区间。 |
-| Figure 13 | 修正后的 compute scaling。 | 做 critical-batch 修正后，`L(C_min)` 更干净。 | 比较数据质量预算时应使用 compute-efficient 假设。 |
-| Figure 14 | 最优模型规模和最小步数随 compute 的变化。 | `N_opt` 快速增长，而 `S_min` 几乎不增长。 | 说明应在长训练前先做好数据和模型规模规划。 |
-| Figure 15 | compute law 与 data law 的外推冲突。 | compute scaling 最终会撞上 data-limited frontier。 | 提前提出现代预训练的核心问题：高质量 token 从哪里来？ |
-| Figure 16 | early stopping 与过拟合下界。 | 拟合公式可预测过拟合何时开始。 | 可辅助决定语料刷新和重复 token 限制。 |
-| Figure 17 | recurrent / universal Transformer 变体。 | 这些替代架构没有推翻 scale 主导结论。 | scale 效应仍强于这些架构变体。 |
-| Figure 18 | critical batch-size 拟合。 | 实证支持跨模型规模的 `B_crit(L)`。 | 验证了资源分配公式中的 batch-size 修正。 |
-| Figure 19 | 达到固定 loss 所需的最小串行步数。 | 大模型达到相同 loss 需要更少最小步数。 | 支持“大模型更 sample-efficient”的结论。 |
-
-#### 表清单
-
-| 表 | 报告内容 | 关键数值 | 解读 |
-| --- | --- | --- | --- |
-| Table 1 | Transformer 参数量与 FLOPs 估计。 | 训练计算近似为 `C ~= 6NBS`。 | 定义了全文使用的 compute accounting。 |
-| Table 2 | `L(N,D)` 的拟合值。 | 该拟合中 `alpha_N ~= 0.076`，`alpha_D ~= 0.103`。 | 联合模型-数据 scaling 能解释有限数据效应。 |
-| Table 3 | `L(N,S)` 的拟合值。 | `alpha_S ~= 0.76`，`S_c ~= 2.1e3`。 | 优化步数瓶颈比模型 / 数据指数陡得多。 |
-| Table 4 | 幂律公式汇总。 | 汇总 `N`、`D`、`C`、`C_min`、`L(N,D)`、`L(N,S)`。 | 是后续阅读和复用公式的快速索引。 |
-| Table 5 | 经验拟合指数与尺度常数。 | `alpha_N=0.076`，`alpha_D=0.095`，`alpha_C_min=0.050`，`alpha_B=0.21`，`alpha_S=0.76`。 | 这些指数是论文最可复用的核心数字。 |
-| Table 6 | 计算最优训练的资源分配。 | `p_N=0.73`，`p_B=0.24`，`p_S=0.03`，`p_D=0.27`。 | 把 scaling law 转化为训练 run 的设计规则。 |
-
-### 8. 主要结果
+### 7. 主要结果
 
 - **结果 1**：`N`、`D` 和 `C_min` 跨多个数量级都遵循幂律下降，每个维度都存在 diminishing returns。
 - **结果 2**：计算最优训练倾向于使用更大模型并训练更少步；把小模型训练到收敛通常不是最省计算的做法。
@@ -1505,13 +1468,13 @@ D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 - **消融洞察**：排除 embedding 参数后，参数量 scaling 更干净，尤其对小模型更重要，因为小模型中 vocabulary embedding 占比较高。
 - **负结果**：在该论文的 early-stopping 设置下，没有观察到当模型规模接近数据规模时出现尖锐的 “jamming transition”。
 
-### 9. 数据质量视角
+### 8. 数据质量视角
 
-#### 9.1 本文中的“质量”是什么意思
+#### 8.1 本文中的“质量”是什么意思
 
 这篇论文没有把数据质量定义为毒性、事实性、重复度或语义丰富度。它隐含地把语料质量定义为：在固定模型规模和计算预算下，token 能够降低 held-out cross-entropy 的能力。按这个视角，高质量预训练数据应当能够把 loss frontier 往下移，或者推迟重复 token 导致的数据瓶颈。
 
-#### 9.2 质量信号
+#### 8.2 质量信号
 
 | 信号 | 如何测量 | 优点 | 弱点 |
 | --- | --- | --- | --- |
@@ -1521,7 +1484,7 @@ D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 | 领域 offset | 其他语料 loss 相对 WebText2 loss 的偏移。 | 能看出预训练改进是否跨领域迁移。 | 无法指出哪些文档或领域造成偏移。 |
 | critical batch size | 经验拟合 `B_crit(L)`。 | 把优化效率和数据消耗速度连接起来。 | 远距离外推不稳，且依赖优化假设。 |
 
-#### 9.3 质量提升操作
+#### 8.3 质量提升操作
 
 | 操作 | 目标数据 | 预期收益 | 潜在副作用 |
 | --- | --- | --- | --- |
@@ -1530,7 +1493,7 @@ D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 | 领域平衡 | web、books、Wikipedia、Common Crawl 风格数据 | 降低迁移 offset，改善泛化。 | 平均 loss 更好不代表稀有或安全关键 slice 更好。 |
 | compute-aware 数据调度 | token batch 与 epoch | 把 token 花在边际 loss 收益更高的位置。 | 论文没有提供直接的单样本选择规则。 |
 
-### 10. 批判性评估
+### 9. 批判性评估
 
 #### 优点
 
@@ -1554,19 +1517,8 @@ D_opt  proportional to C_min ^ 0.27, 按单 epoch 估算
 - **对 judge / benchmark 过拟合**：主要 judge 是 held-out loss，可能低估记忆化和精确重合问题。
 - **跨领域或跨语言泛化**：研究主要是英文文本，跨语言和多模态 scaling 仍然开放。
 
-### 11. 可复现性评估
 
-| 项目 | 状态 | 说明 |
-| --- | --- | --- |
-| 是否发布代码 | 否 | 论文没有链接官方训练 / 评估代码。 |
-| 是否发布数据 | 否 | WebText2 被描述了，但没有以可复现语料形式发布。 |
-| 是否发布数据配方 | 部分 | 描述了 WebText-style 构建和语料规模，但精确 crawl / filter 细节不足。 |
-| prompt / 标注指南 | N/A | 这是无监督语言模型预训练。 |
-| 超参数 | 部分 | 报告了模型族、优化器、context length、batch 设置和若干训练细节。 |
-| 计算量 | 部分 | 以公式估算并报告 PF-days，但没有发布原始训练日志。 |
-| contamination 检查 | 否 | 论文做了迁移 loss 评估，但没有现代意义上的污染审计。 |
-
-### 12. 与其他论文的关系
+### 10. 与其他论文的关系
 
 - **建立在以下工作之上**：
   - Hestness et al., 2017：更早的神经网络 scaling law 观察。
