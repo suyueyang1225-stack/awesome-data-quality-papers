@@ -42,23 +42,37 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 
 ## Contents
 
-- [Systematic Taxonomy](#systematic-taxonomy)
-- [General Surveys and Position Papers](#general-surveys-and-position-papers)
-- [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training)
-- [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining)
-- [Instruction Tuning and Alignment Data](#instruction-tuning-and-alignment-data)
-- [Data Selection](#data-selection)
-- [Quality Evaluation Metrics](#quality-evaluation-metrics)
-- [Filtering, Cleaning, and Deduplication](#filtering-cleaning-and-deduplication)
-- [Synthetic Data Generation and Curation](#synthetic-data-generation-and-curation)
-- [Multimodal Data Quality](#multimodal-data-quality)
-- [RAG Data Quality](#rag-data-quality)
-- [Benchmark Contamination and Evaluation Reliability](#benchmark-contamination-and-evaluation-reliability)
-- [Tools and Systems](#tools-and-systems)
-- [Datasets and Data-Centric Benchmarks](#datasets-and-data-centric-benchmarks)
-- [Research Roadmap](#research-roadmap)
-- [Contribution Guide](#contribution-guide)
-- [Reading Notes](docs/reading-notes.md)
+### 1. Research Structure
+
+- [Systematic Taxonomy](#systematic-taxonomy) - three-pillar classification and reading workflow.
+- [General Surveys and Position Papers](#general-surveys-and-position-papers) - field-level maps and framing papers.
+
+### 2. Core Research Directions
+
+- [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training) - data quantity, quality, mixture, compute, and training-stage scaling.
+- [Data Selection](#data-selection) - valuation, influence, filtering, mixture optimization, and targeted selection.
+- [Quality Evaluation Metrics](#quality-evaluation-metrics) - toxicity, semantic consistency, knowledge density, diversity, and reliability metrics.
+
+### 3. Data Scenarios and Improvement Methods
+
+- [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining) - web corpora, corpus recipes, filtering, and pretraining data quality.
+- [Instruction Tuning and Alignment Data](#instruction-tuning-and-alignment-data) - SFT, preference, and alignment data quality.
+- [Filtering, Cleaning, and Deduplication](#filtering-cleaning-and-deduplication) - operational data repair and removal methods.
+- [Synthetic Data Generation and Curation](#synthetic-data-generation-and-curation) - generation, rewriting, expansion, and post-generation curation.
+- [Multimodal Data Quality](#multimodal-data-quality) - image-text, visual instruction, and multimodal quality signals.
+- [RAG Data Quality](#rag-data-quality) - retrieval corpus, chunk, context, and answer quality.
+
+### 4. Evaluation Reliability
+
+- [Benchmark Contamination and Evaluation Reliability](#benchmark-contamination-and-evaluation-reliability) - leakage, memorization, and benchmark trustworthiness.
+
+### 5. Resources and Project Docs
+
+- [Tools and Systems](#tools-and-systems) - reusable software for processing, evaluation, and auditing.
+- [Datasets and Data-Centric Benchmarks](#datasets-and-data-centric-benchmarks) - public corpora and benchmarks.
+- [Research Roadmap](#research-roadmap) - open problems and research agenda.
+- [Contribution Guide](#contribution-guide) - how to add papers and notes.
+- [Reading Notes](docs/reading-notes.md) - structured notes for listed papers.
 
 ## General Surveys and Position Papers
 
