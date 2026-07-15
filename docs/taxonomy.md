@@ -13,10 +13,10 @@ Each paper should have:
 | Pillar | Core Question | Typical Outputs |
 | --- | --- | --- |
 | A. Scaling Laws | How do data quantity, quality, mixture, model scale, compute, and post-training budget interact? | Scaling curves, compute-optimal rules, data-mixture laws, transfer laws |
-| B. Data Selection | Which data should be kept, weighted, mixed, scheduled, or generated for a target capability? | Selection scores, influence values, filters, curricula, data recipes |
+| B. Data Selection and Improvement | Which data should be kept, weighted, mixed, scheduled, repaired, or generated for a target capability? | Selection scores, influence values, filters, curricula, repair rules, data recipes |
 | C. Quality Evaluation Metrics | How do we measure whether data is useful, safe, consistent, dense, and reliable? | Metrics, benchmarks, judges, diagnostic dashboards, audit protocols |
 
-Supporting sections are used when a resource is primarily a system, dataset, benchmark, or modality-specific application rather than a method paper.
+Tools, systems, datasets, and benchmarks are resource sections. Scenario-specific research topics should be placed under one of the three main branches.
 
 ## A. Scaling Laws
 
@@ -36,21 +36,22 @@ Primary signals:
 - Reports fitted laws, predictable trends, or compute/data tradeoffs.
 - Helps estimate whether better data can substitute for more data or compute.
 
-## B. Data Selection
+## B. Data Selection and Improvement
 
-Use this pillar when the paper decides which examples, documents, domains, instructions, or synthetic samples should enter training or evaluation.
+Use this pillar when the paper decides which examples, documents, domains, instructions, or synthetic samples should enter training, be repaired, or be generated.
 
 | Code | Subcategory | Use When | Representative Papers |
 | --- | --- | --- | --- |
 | B1 | Data valuation and influence | The work estimates the marginal contribution of examples or subsets. | Data Shapley; TracIn; Datamodels; LESS |
-| B2 | Quality filtering and document scoring | The work assigns quality scores or filters low-value data before training. | QuRating; FineWeb; Rethinking Classifier-Based Quality Filtering |
+| B2 | LLM pretraining data selection | The work scores, filters, deduplicates, mixes, or documents web-scale pretraining corpora. | DataComp-LM; FineWeb; Dolma; QuRating |
 | B3 | Mixture optimization and curriculum | The work chooses domain proportions, schedules data, or balances diversity and specialization. | Data Mixing Laws; DataComp-LM |
 | B4 | Instruction and alignment data selection | The work selects SFT, preference, or alignment data for target behavior. | AlpaGasus; What Makes Good Data for Alignment; LIMA |
 | B5 | Synthetic and rewritten data selection | The work filters, validates, or selects generated data after synthesis or rewriting. | Self-Instruct; Instruction Backtranslation; LLMs-Driven Synthetic Data Generation, Curation, and Evaluation |
+| B6 | Filtering, cleaning, and deduplication | The work removes, repairs, canonicalizes, or deduplicates data as an improvement operation. | Data-Juicer; Deduplicating Training Data Makes Language Models Better; SemDeDup; CCNet |
 
 Primary signals:
 
-- The central object is a selection, filtering, weighting, routing, or scheduling decision.
+- The central object is a selection, filtering, weighting, routing, scheduling, repair, or generation decision.
 - The paper compares selected data against random, heuristic, or full-data baselines.
 - The method is evaluated by downstream model utility, target capability transfer, or data efficiency.
 
@@ -73,25 +74,27 @@ Primary signals:
 - The paper validates correlation with human judgment, model performance, safety, or factuality.
 - The metric can guide selection, cleaning, rewriting, or audit decisions.
 
-## Supporting Sections
+## README Section Mapping
 
-| Section | Role |
-| --- | --- |
-| General Surveys and Position Papers | Broad maps of data-centric AI, data valuation, synthetic data, or dataset quality. |
-| Data Quality for LLM Pretraining | Corpus construction, web data filtering, deduplication, and pretraining data recipes. |
-| Instruction Tuning and Alignment Data | SFT, preference, alignment, and instruction-response datasets. |
-| Filtering, Cleaning, and Deduplication | Operational data repair and removal methods. |
-| Synthetic Data Generation and Curation | Data creation, rewriting, expansion, and post-generation quality control. |
-| Multimodal Data Quality | Image-text, video-text, visual instruction, and multimodal quality work. |
-| RAG Data Quality | Retrieval corpus, chunk, query, context, and answer quality evaluation. |
-| Tools and Systems | Reusable software for data processing, evaluation, and auditing. |
-| Datasets and Data-Centric Benchmarks | Public corpora and benchmark suites used for data quality research. |
+The README uses three main branches. Scenario-specific sections are second-level topics under the closest branch, not independent top-level research directions.
+
+| README Section | Primary Branch | Taxonomy Code | Why |
+| --- | --- | --- | --- |
+| Data Quality for LLM Pretraining | B. Data Selection and Improvement | B2, with A1-A3/C3 cross-tags when needed | Most papers decide which pretraining documents, domains, filters, or mixtures to use. |
+| Instruction Tuning and Alignment Data | B. Data Selection and Improvement | B4, with A5/C1-C3 cross-tags when needed | Most papers select, compress, filter, or synthesize SFT/preference/alignment data. |
+| Filtering, Cleaning, and Deduplication | B. Data Selection and Improvement | B6, with C5 cross-tags for leakage/contamination work | These methods decide what to remove, repair, canonicalize, or deduplicate. |
+| Synthetic Data Generation and Curation | B. Data Selection and Improvement | B5, with C2/C3 cross-tags when quality evaluation is central | Generation is useful only after selection, validation, and curation. |
+| RAG Data Quality | C. Quality Evaluation Metrics | C2, C3, C5 | RAG work typically measures context relevance, faithfulness, grounding, and answer correctness. |
+| Multimodal Data Quality | C. Quality Evaluation Metrics | C6, with B2/B4 cross-tags for selection papers | Image-text and visual-instruction work often defines alignment or quality signals. |
+| Benchmark Contamination and Evaluation Reliability | C. Quality Evaluation Metrics | C5 | These papers audit leakage, memorization, and benchmark trustworthiness. |
+| Tools and Systems | Resource Section | Cross-tag by function | Software should be listed as a resource and cross-tagged to A/B/C. |
+| Datasets and Data-Centric Benchmarks | Resource Section | Cross-tag by function | Datasets should be listed as resources and cross-tagged to A/B/C. |
 
 ## Classification Rules
 
 1. Choose the primary category by the paper's main research question, not by every method it uses.
 2. If the paper predicts behavior under scale, use Scaling Laws.
-3. If the paper chooses data to train on, use Data Selection.
+3. If the paper chooses, repairs, deduplicates, or generates data to train on, use Data Selection and Improvement.
 4. If the paper measures quality or builds an evaluation signal, use Quality Evaluation Metrics.
 5. If a paper spans multiple pillars, list it in the primary section and mention cross-tags in the reading note.
 6. If a resource is mostly software or a dataset, list it under Tools and Systems or Datasets and Data-Centric Benchmarks, then cross-tag it in the reading note.
@@ -101,9 +104,9 @@ Primary signals:
 | Research Goal | Start Here | Then Read |
 | --- | --- | --- |
 | Estimate the return from more or better data | A1, A2, A3 | B2, C3 |
-| Build a data selection pipeline | B1, B2, B3 | A3, C2, C3, C4 |
+| Build a data selection pipeline | B1, B2, B3, B6 | A3, C2, C3, C4 |
 | Study post-training data quality | A5, B4 | C1, C2, C3 |
-| Design quality metrics | C1, C2, C3 | B2, Filtering/Cleaning |
-| Work on toxicity correction | C1 | Synthetic Data Generation and Curation; Filtering/Cleaning |
-| Work on semantic consistency repair | C2 | RAG Data Quality; Synthetic Data Generation and Curation |
-| Work on knowledge-dense training data | C3 | A2, B2, Data Quality for LLM Pretraining |
+| Design quality metrics | C1, C2, C3 | B2, B6 |
+| Work on toxicity correction | C1 | B5, B6 |
+| Work on semantic consistency repair | C2 | B5, RAG Data Quality |
+| Work on knowledge-dense training data | C3 | A2, B2 |

@@ -4,9 +4,9 @@ This reading plan turns the repository into a research workflow.
 
 ## Week 1: Scope and Taxonomy
 
-- Read the surveys in "General Surveys and Position Papers".
+- Read the surveys in "General Surveys".
 - Build a private glossary for quality, utility, diversity, provenance, and contamination.
-- Decide whether the target paper is primarily about scaling laws, data selection, or quality evaluation metrics.
+- Decide whether the target paper is primarily about scaling laws, data selection and improvement, or quality evaluation metrics.
 
 ## Week 2: Scaling Laws
 
@@ -14,11 +14,11 @@ This reading plan turns the repository into a research workflow.
 - Extract the variables each paper scales: model size, token count, data mixture, data quality, SFT/RL data volume, and reward optimization budget.
 - Identify which scaling laws can predict returns from better data before full-scale training.
 
-## Week 3: Data Selection
+## Week 3: Data Selection and Improvement
 
-- Read Data Shapley, TracIn, Datamodels, LESS, AlpaGasus, LIMA, and instruction-data selection papers.
-- Compare per-example value, subset value, target-task influence, diversity, and data mixture optimization.
-- Study when fewer or better examples improve model behavior, and when filtering harms coverage or robustness.
+- Read Data Shapley, TracIn, Datamodels, LESS, AlpaGasus, LIMA, pretraining-data selection, filtering, deduplication, and synthetic-data curation papers.
+- Compare per-example value, subset value, target-task influence, data mixture optimization, cleaning, deduplication, and generation quality control.
+- Study when fewer, cleaner, denser, or better-selected examples improve model behavior, and when filtering harms coverage or robustness.
 
 ## Week 4: Quality Evaluation Metrics
 

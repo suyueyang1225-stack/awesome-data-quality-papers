@@ -37,7 +37,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 | Pillar | Substructure | Main Result |
 | --- | --- | --- |
 | **Scaling Laws** | Pretraining scaling, data-constrained scaling, data mixture/domain scaling, downstream transfer scaling, post-training/alignment scaling | Predict how data quality and quantity interact with compute, model size, and training stage. |
-| **Data Selection** | Data valuation/influence, quality filtering, mixture optimization, instruction/alignment data selection, synthetic data selection | Decide which data should be kept, weighted, mixed, scheduled, or generated for target capabilities. |
+| **Data Selection and Improvement** | LLM pretraining data selection, instruction/alignment data selection, filtering/cleaning/deduplication, synthetic/rewritten data curation | Decide which data should be kept, weighted, mixed, scheduled, repaired, or generated for target capabilities. |
 | **Quality Evaluation Metrics** | Toxicity/safety, semantic/factual consistency, knowledge density, diversity/coverage, contamination, multimodal quality | Measure whether data is useful, safe, consistent, dense, representative, and reliable. |
 
 ## Contents
@@ -45,28 +45,25 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 ### 1. Research Structure
 
 - [Systematic Taxonomy](#systematic-taxonomy) - three-pillar classification and reading workflow.
-- [General Surveys and Position Papers](#general-surveys-and-position-papers) - field-level maps and framing papers.
+- [General Surveys](#general-surveys) - field-level maps and framing papers.
 
-### 2. Core Research Directions
+### 2. Three Main Branches
 
-- [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training) - data quantity, quality, mixture, compute, and training-stage scaling.
-- [Data Selection](#data-selection) - valuation, influence, filtering, mixture optimization, and targeted selection.
-- [Quality Evaluation Metrics](#quality-evaluation-metrics) - toxicity, semantic consistency, knowledge density, diversity, and reliability metrics.
+- [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training)
+  - Pretraining scaling, data-constrained scaling, data mixture scaling, downstream transfer, and post-training scaling.
+- [Data Selection and Improvement](#data-selection)
+  - [General Data Valuation and Influence](#general-data-valuation-and-influence)
+  - [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining)
+  - [Instruction Tuning and Alignment Data](#instruction-tuning-and-alignment-data)
+  - [Filtering, Cleaning, and Deduplication](#filtering-cleaning-and-deduplication)
+  - [Synthetic Data Generation and Curation](#synthetic-data-generation-and-curation)
+- [Quality Evaluation Metrics](#quality-evaluation-metrics)
+  - [Core Text Quality and Safety Metrics](#core-text-quality-and-safety-metrics)
+  - [RAG Data Quality](#rag-data-quality)
+  - [Multimodal Data Quality](#multimodal-data-quality)
+  - [Benchmark Contamination and Evaluation Reliability](#benchmark-contamination-and-evaluation-reliability)
 
-### 3. Data Scenarios and Improvement Methods
-
-- [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining) - web corpora, corpus recipes, filtering, and pretraining data quality.
-- [Instruction Tuning and Alignment Data](#instruction-tuning-and-alignment-data) - SFT, preference, and alignment data quality.
-- [Filtering, Cleaning, and Deduplication](#filtering-cleaning-and-deduplication) - operational data repair and removal methods.
-- [Synthetic Data Generation and Curation](#synthetic-data-generation-and-curation) - generation, rewriting, expansion, and post-generation curation.
-- [Multimodal Data Quality](#multimodal-data-quality) - image-text, visual instruction, and multimodal quality signals.
-- [RAG Data Quality](#rag-data-quality) - retrieval corpus, chunk, context, and answer quality.
-
-### 4. Evaluation Reliability
-
-- [Benchmark Contamination and Evaluation Reliability](#benchmark-contamination-and-evaluation-reliability) - leakage, memorization, and benchmark trustworthiness.
-
-### 5. Resources and Project Docs
+### 3. Resources and Project Docs
 
 - [Tools and Systems](#tools-and-systems) - reusable software for processing, evaluation, and auditing.
 - [Datasets and Data-Centric Benchmarks](#datasets-and-data-centric-benchmarks) - public corpora and benchmarks.
@@ -93,7 +90,22 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - **Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms** - [原文](https://arxiv.org/abs/2406.02900) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-reward-model-overoptimization-in-direct-alignment-algorithms) - Extends overoptimization scaling analysis to direct alignment objectives such as DPO-style training.
 - **Scaling Behaviors of LLM Reinforcement Learning Post-Training: An Empirical Study in Mathematical Reasoning** - [原文](https://arxiv.org/abs/2509.25300) · [阅读笔记](docs/reading-notes.md#scaling-behaviors-of-llm-reinforcement-learning-post-training-an-empirical-study-in-mathematical-reasoning) - Empirical study of model scale, data volume, and compute in RL-based post-training for reasoning.
 
-## Data Quality for LLM Pretraining
+<a id="data-selection"></a>
+
+## Data Selection and Improvement
+
+This branch covers data keep/drop/weight/mix/repair/generate decisions. Pretraining data quality, instruction/alignment data quality, filtering, cleaning, deduplication, and synthetic data curation are treated as second-level topics under this branch.
+
+### General Data Valuation and Influence
+
+- **Data Shapley: Equitable Valuation of Data for Machine Learning** - [原文](https://arxiv.org/abs/1904.02868) · [阅读笔记](docs/reading-notes.md#data-shapley-equitable-valuation-of-data-for-machine-learning) - Shapley-value framework for assigning value to individual training examples.
+- **Estimating Training Data Influence by Tracing Gradient Descent** - [原文](https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html) · [阅读笔记](docs/reading-notes.md#estimating-training-data-influence-by-tracing-gradient-descent) - TracIn estimates example influence using checkpoints and gradient information.
+- **Data Valuation Using Reinforcement Learning** - [原文](https://arxiv.org/abs/1909.11671) · [阅读笔记](docs/reading-notes.md#data-valuation-using-reinforcement-learning) - Learns data valuation policies for selecting beneficial samples.
+- **Datamodels: Predicting Predictions from Training Data** - [原文](https://arxiv.org/abs/2202.00622) · [阅读笔记](docs/reading-notes.md#datamodels-predicting-predictions-from-training-data) - Models how training subsets affect predictions and supports dataset debugging.
+- [LESS](https://github.com/princeton-nlp/LESS) - Codebase for influence-based targeted instruction data selection.
+- [pyDVL](https://pydvl.org/stable/value/) - Python library for data valuation methods and workflows.
+
+### Data Quality for LLM Pretraining
 
 - **DataComp-LM: In Search of the Next Generation of Training Sets for Language Models** - [原文](https://arxiv.org/abs/2406.11794) · [阅读笔记](docs/reading-notes.md#datacomp-lm-in-search-of-the-next-generation-of-training-sets-for-language-models) - Controlled testbed for language-model data curation, including filtering, deduplication, data mixing, and downstream evaluation.
 - **The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale** - [原文](https://arxiv.org/abs/2406.17557) · [阅读笔记](docs/reading-notes.md#the-fineweb-datasets-decanting-the-web-for-the-finest-text-data-at-scale) - Documents large-scale web data filtering, deduplication, and ablations behind FineWeb and FineWeb-Edu.
@@ -103,7 +115,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - **Analyzing Similarity Metrics for Data Selection for Language Model Pretraining** - [原文](https://arxiv.org/abs/2502.02494) · [阅读笔记](docs/reading-notes.md#analyzing-similarity-metrics-for-data-selection-for-language-model-pretraining) - Studies how embedding similarity relates to pretraining-loss similarity and data diversification.
 - **Rethinking Classifier-Based Quality Filtering for LLM Pretraining** - [原文](https://openreview.net/forum?id=vSBACt34gS) · [阅读笔记](docs/reading-notes.md#rethinking-classifier-based-quality-filtering-for-llm-pretraining) - Analyzes classifier-based quality filtering and challenges simple interpretations of quality scores.
 
-## Instruction Tuning and Alignment Data
+### Instruction Tuning and Alignment Data
 
 - **AlpaGasus: Training a Better Alpaca with Fewer Data** - [原文](https://openreview.net/forum?id=FdVXgSJhvz) · [阅读笔记](docs/reading-notes.md#alpagasus-training-a-better-alpaca-with-fewer-data) - Filters low-quality instruction data with an LLM judge and improves instruction tuning with fewer examples.
 - **LESS: Selecting Influential Data for Targeted Instruction Tuning** - [原文](https://proceedings.mlr.press/v235/xia24c.html) · [阅读笔记](docs/reading-notes.md#less-selecting-influential-data-for-targeted-instruction-tuning) - Optimizer-aware influence-based selection for inducing target capabilities.
@@ -111,16 +123,31 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - **Self-Alignment with Instruction Backtranslation** - [原文](https://openreview.net/forum?id=1oijHJBRsT) · [阅读笔记](docs/reading-notes.md#self-alignment-with-instruction-backtranslation) - Uses model-generated instructions from high-quality responses to improve instruction tuning data.
 - **LIMA: Less Is More for Alignment** - [原文](https://arxiv.org/abs/2305.11206) · [阅读笔记](docs/reading-notes.md#lima-less-is-more-for-alignment) - Shows strong alignment behavior can emerge from a small carefully curated supervised fine-tuning dataset.
 
-## Data Selection
+### Filtering, Cleaning, and Deduplication
 
-- **Data Shapley: Equitable Valuation of Data for Machine Learning** - [原文](https://arxiv.org/abs/1904.02868) · [阅读笔记](docs/reading-notes.md#data-shapley-equitable-valuation-of-data-for-machine-learning) - Shapley-value framework for assigning value to individual training examples.
-- **Estimating Training Data Influence by Tracing Gradient Descent** - [原文](https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html) · [阅读笔记](docs/reading-notes.md#estimating-training-data-influence-by-tracing-gradient-descent) - TracIn estimates example influence using checkpoints and gradient information.
-- **Data Valuation Using Reinforcement Learning** - [原文](https://arxiv.org/abs/1909.11671) · [阅读笔记](docs/reading-notes.md#data-valuation-using-reinforcement-learning) - Learns data valuation policies for selecting beneficial samples.
-- **Datamodels: Predicting Predictions from Training Data** - [原文](https://arxiv.org/abs/2202.00622) · [阅读笔记](docs/reading-notes.md#datamodels-predicting-predictions-from-training-data) - Models how training subsets affect predictions and supports dataset debugging.
-- [LESS](https://github.com/princeton-nlp/LESS) - Codebase for influence-based targeted instruction data selection.
-- [pyDVL](https://pydvl.org/stable/value/) - Python library for data valuation methods and workflows.
+- **Data-Juicer: A One-Stop Data Processing System for Large Language Models** - [原文](https://arxiv.org/abs/2309.02033) · [阅读笔记](docs/reading-notes.md#data-juicer-a-one-stop-data-processing-system-for-large-language-models) - System for scalable LLM data processing, analysis, and data recipe exploration.
+- **Data-Juicer 2.0: Cloud-Scale Adaptive Data Processing for and with Foundation Models** - [原文](https://proceedings.neurips.cc/paper_files/paper/2025/file/76dbd7e897be2eb883ede598b91270fb-Paper-Datasets_and_Benchmarks_Track.pdf) · [阅读笔记](docs/reading-notes.md#data-juicer-2-0-cloud-scale-adaptive-data-processing-for-and-with-foundation-models) - Extends data processing to multimodal and cloud-scale pipelines.
+- **Deduplicating Training Data Makes Language Models Better** - [原文](https://arxiv.org/abs/2107.06499) · [阅读笔记](docs/reading-notes.md#deduplicating-training-data-makes-language-models-better) - Studies exact and near-deduplication effects on language modeling.
+- **SemDeDup: Data-Efficient Learning at Web-Scale Through Semantic Deduplication** - [原文](https://arxiv.org/abs/2303.09540) · [阅读笔记](docs/reading-notes.md#semdedup-data-efficient-learning-at-web-scale-through-semantic-deduplication) - Semantic deduplication method for reducing redundancy while preserving performance.
+- **CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data** - [原文](https://arxiv.org/abs/1911.00359) · [阅读笔记](docs/reading-notes.md#ccnet-extracting-high-quality-monolingual-datasets-from-web-crawl-data) - Classic Common Crawl filtering pipeline for language-model corpora.
+- [deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets) - Official code for exact-substring deduplication from "Deduplicating Training Data Makes Language Models Better".
+
+### Synthetic Data Generation and Curation
+
+- **Self-Instruct: Aligning Language Models with Self-Generated Instructions** - [原文](https://arxiv.org/abs/2212.10560) · [阅读笔记](docs/reading-notes.md#self-instruct-aligning-language-models-with-self-generated-instructions) - Bootstraps instruction-following data from model-generated instructions.
+- **Evol-Instruct** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#evol-instruct) - Evolves instruction data to increase complexity and diversity.
+- **WizardLM** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#wizardlm) - Uses evolved instructions to improve instruction-following models.
+- **Orca: Progressive Learning from Complex Explanation Traces of GPT-4** - [原文](https://arxiv.org/abs/2306.02707) · [阅读笔记](docs/reading-notes.md#orca-progressive-learning-from-complex-explanation-traces-of-gpt-4) - Uses explanation-rich synthetic data for imitation learning.
+- **Phi-1: Textbooks Are All You Need** - [原文](https://arxiv.org/abs/2306.11644) · [阅读笔记](docs/reading-notes.md#phi-1-textbooks-are-all-you-need) - Demonstrates the power of high-quality synthetic textbook-style data for code models.
+- **LLMs-Driven Synthetic Data Generation, Curation, and Evaluation** - [原文](https://arxiv.org/abs/2406.15126) · [阅读笔记](docs/reading-notes.md#llms-driven-synthetic-data-generation-curation-and-evaluation) - Survey of synthetic data generation and evaluation pipelines.
+
+<a id="quality-evaluation-metrics"></a>
 
 ## Quality Evaluation Metrics
+
+This branch covers measurement and auditing signals. RAG data quality, multimodal data quality, and benchmark contamination are treated as second-level metric and reliability topics, not independent top-level branches.
+
+### Core Text Quality and Safety Metrics
 
 - **Evaluating Neural Toxic Degeneration in Language Models** - [原文](https://arxiv.org/abs/2009.11462) · [阅读笔记](docs/reading-notes.md#evaluating-neural-toxic-degeneration-in-language-models) - Introduces RealToxicityPrompts for measuring toxic generations and evaluating detoxification behavior.
 - **ToxiGen: A Large-Scale Machine-Generated Dataset for Adversarial and Implicit Hate Speech Detection** - [原文](https://arxiv.org/abs/2203.09509) · [阅读笔记](docs/reading-notes.md#toxigen-a-large-scale-machine-generated-dataset-for-adversarial-and-implicit-hate-speech-detection) - Adversarial toxicity benchmark targeting implicit hate speech and spurious identity correlations.
@@ -132,33 +159,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - **The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale** - [原文](https://arxiv.org/abs/2406.17557) · [阅读笔记](docs/reading-notes.md#the-fineweb-datasets-decanting-the-web-for-the-finest-text-data-at-scale) - Includes FineWeb-Edu, an educational-quality filter that operationalizes knowledge density and learning value.
 - **QuRating: Selecting High-Quality Data for Training Language Models** - [原文](https://arxiv.org/abs/2402.09739) · [阅读笔记](docs/reading-notes.md#qurating-selecting-high-quality-data-for-training-language-models) - Uses LLM-based ratings for educational value, expertise, writing style, and factual content as quality metrics.
 
-## Filtering, Cleaning, and Deduplication
-
-- **Data-Juicer: A One-Stop Data Processing System for Large Language Models** - [原文](https://arxiv.org/abs/2309.02033) · [阅读笔记](docs/reading-notes.md#data-juicer-a-one-stop-data-processing-system-for-large-language-models) - System for scalable LLM data processing, analysis, and data recipe exploration.
-- **Data-Juicer 2.0: Cloud-Scale Adaptive Data Processing for and with Foundation Models** - [原文](https://proceedings.neurips.cc/paper_files/paper/2025/file/76dbd7e897be2eb883ede598b91270fb-Paper-Datasets_and_Benchmarks_Track.pdf) · [阅读笔记](docs/reading-notes.md#data-juicer-2-0-cloud-scale-adaptive-data-processing-for-and-with-foundation-models) - Extends data processing to multimodal and cloud-scale pipelines.
-- **Deduplicating Training Data Makes Language Models Better** - [原文](https://arxiv.org/abs/2107.06499) · [阅读笔记](docs/reading-notes.md#deduplicating-training-data-makes-language-models-better) - Studies exact and near-deduplication effects on language modeling.
-- **SemDeDup: Data-Efficient Learning at Web-Scale Through Semantic Deduplication** - [原文](https://arxiv.org/abs/2303.09540) · [阅读笔记](docs/reading-notes.md#semdedup-data-efficient-learning-at-web-scale-through-semantic-deduplication) - Semantic deduplication method for reducing redundancy while preserving performance.
-- **CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data** - [原文](https://arxiv.org/abs/1911.00359) · [阅读笔记](docs/reading-notes.md#ccnet-extracting-high-quality-monolingual-datasets-from-web-crawl-data) - Classic Common Crawl filtering pipeline for language-model corpora.
-- [deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets) - Official code for exact-substring deduplication from "Deduplicating Training Data Makes Language Models Better".
-
-## Synthetic Data Generation and Curation
-
-- **Self-Instruct: Aligning Language Models with Self-Generated Instructions** - [原文](https://arxiv.org/abs/2212.10560) · [阅读笔记](docs/reading-notes.md#self-instruct-aligning-language-models-with-self-generated-instructions) - Bootstraps instruction-following data from model-generated instructions.
-- **Evol-Instruct** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#evol-instruct) - Evolves instruction data to increase complexity and diversity.
-- **WizardLM** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#wizardlm) - Uses evolved instructions to improve instruction-following models.
-- **Orca: Progressive Learning from Complex Explanation Traces of GPT-4** - [原文](https://arxiv.org/abs/2306.02707) · [阅读笔记](docs/reading-notes.md#orca-progressive-learning-from-complex-explanation-traces-of-gpt-4) - Uses explanation-rich synthetic data for imitation learning.
-- **Phi-1: Textbooks Are All You Need** - [原文](https://arxiv.org/abs/2306.11644) · [阅读笔记](docs/reading-notes.md#phi-1-textbooks-are-all-you-need) - Demonstrates the power of high-quality synthetic textbook-style data for code models.
-- **LLMs-Driven Synthetic Data Generation, Curation, and Evaluation** - [原文](https://arxiv.org/abs/2406.15126) · [阅读笔记](docs/reading-notes.md#llms-driven-synthetic-data-generation-curation-and-evaluation) - Survey of synthetic data generation and evaluation pipelines.
-
-## Multimodal Data Quality
-
-- **DataComp: In Search of the Next Generation of Multimodal Datasets** - [原文](https://arxiv.org/abs/2304.14108) · [阅读笔记](docs/reading-notes.md#datacomp-in-search-of-the-next-generation-of-multimodal-datasets) - Benchmark for dataset filtering strategies in multimodal contrastive learning.
-- **LAION-5B: An Open Large-Scale Dataset for Training Next Generation Image-Text Models** - [原文](https://arxiv.org/abs/2210.08402) · [阅读笔记](docs/reading-notes.md#laion-5b-an-open-large-scale-dataset-for-training-next-generation-image-text-models) - Large-scale image-text dataset with filtering and safety-related documentation.
-- **CLIPScore: A Reference-free Evaluation Metric for Image Captioning** - [原文](https://arxiv.org/abs/2104.08718) · [阅读笔记](docs/reading-notes.md#clipscore-a-reference-free-evaluation-metric-for-image-captioning) - Uses image-text alignment as a quality signal.
-- **TIVE: Less is More: High-Value Data Selection for Visual Instruction Tuning** - [原文](https://github.com/simplelifetime/TIVE) · [阅读笔记](docs/reading-notes.md#tive-less-is-more-high-value-data-selection-for-visual-instruction-tuning) - Studies redundancy and data selection in visual instruction data.
-- **A Comprehensive Study of Multimodal Large Language Models for Image Quality Assessment** - [原文](https://arxiv.org/abs/2403.10854) · [阅读笔记](docs/reading-notes.md#a-comprehensive-study-of-multimodal-large-language-models-for-image-quality-assessment) - Evaluates multimodal LLMs as image quality assessors.
-
-## RAG Data Quality
+### RAG Data Quality
 
 - **RAGAS: Automated Evaluation of Retrieval Augmented Generation** - [原文](https://arxiv.org/abs/2309.15217) · [阅读笔记](docs/reading-notes.md#ragas-automated-evaluation-of-retrieval-augmented-generation) - Evaluation framework for context relevance, faithfulness, answer correctness, and related RAG metrics.
 - **ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems** - [原文](https://arxiv.org/abs/2311.09476) · [阅读笔记](docs/reading-notes.md#ares-an-automated-evaluation-framework-for-retrieval-augmented-generation-systems) - Automated RAG evaluation with synthetic queries and judge models.
@@ -166,7 +167,15 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - **Contextual Retrieval** - [原文](https://www.anthropic.com/engineering/contextual-retrieval) · [阅读笔记](docs/reading-notes.md#contextual-retrieval) - Enriches chunks with context before indexing to reduce retrieval failures.
 - **RAGChecker** - [原文](https://arxiv.org/abs/2408.08067) · [阅读笔记](docs/reading-notes.md#ragchecker) - Fine-grained diagnostic framework for RAG systems.
 
-## Benchmark Contamination and Evaluation Reliability
+### Multimodal Data Quality
+
+- **DataComp: In Search of the Next Generation of Multimodal Datasets** - [原文](https://arxiv.org/abs/2304.14108) · [阅读笔记](docs/reading-notes.md#datacomp-in-search-of-the-next-generation-of-multimodal-datasets) - Benchmark for dataset filtering strategies in multimodal contrastive learning.
+- **LAION-5B: An Open Large-Scale Dataset for Training Next Generation Image-Text Models** - [原文](https://arxiv.org/abs/2210.08402) · [阅读笔记](docs/reading-notes.md#laion-5b-an-open-large-scale-dataset-for-training-next-generation-image-text-models) - Large-scale image-text dataset with filtering and safety-related documentation.
+- **CLIPScore: A Reference-free Evaluation Metric for Image Captioning** - [原文](https://arxiv.org/abs/2104.08718) · [阅读笔记](docs/reading-notes.md#clipscore-a-reference-free-evaluation-metric-for-image-captioning) - Uses image-text alignment as a quality signal.
+- **TIVE: Less is More: High-Value Data Selection for Visual Instruction Tuning** - [原文](https://github.com/simplelifetime/TIVE) · [阅读笔记](docs/reading-notes.md#tive-less-is-more-high-value-data-selection-for-visual-instruction-tuning) - Studies redundancy and data selection in visual instruction data.
+- **A Comprehensive Study of Multimodal Large Language Models for Image Quality Assessment** - [原文](https://arxiv.org/abs/2403.10854) · [阅读笔记](docs/reading-notes.md#a-comprehensive-study-of-multimodal-large-language-models-for-image-quality-assessment) - Evaluates multimodal LLMs as image quality assessors.
+
+### Benchmark Contamination and Evaluation Reliability
 
 - **Benchmark Data Contamination of Large Language Models: A Survey** - [原文](https://arxiv.org/abs/2406.04244) · [阅读笔记](docs/reading-notes.md#benchmark-data-contamination-of-large-language-models-a-survey) - Reviews benchmark leakage, detection, and mitigation for LLM evaluation.
 - **Data Contamination: From Memorization to Exploitation** - [原文](https://arxiv.org/abs/2312.08242) · [阅读笔记](docs/reading-notes.md#data-contamination-from-memorization-to-exploitation) - Studies contamination effects and evaluation reliability.
@@ -203,11 +212,11 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 - Extend scaling analysis to post-training, including SFT, DPO/RLHF, reward model overoptimization, and RL reasoning.
 - Report compute-normalized and data-normalized gains, not only final benchmark scores.
 
-### 2. Data Selection
+### 2. Data Selection and Improvement
 
 - Compare rule-based filters, model-based filters, influence methods, and LLM judges.
 - Separate intrinsic quality, target-task influence, domain coverage, and diversity.
-- Treat data mixture optimization and curriculum scheduling as first-class research objects.
+- Treat data mixture optimization, curriculum scheduling, filtering, cleaning, deduplication, and synthetic-data curation as first-class research objects.
 
 ### 3. Quality Evaluation Metrics
 

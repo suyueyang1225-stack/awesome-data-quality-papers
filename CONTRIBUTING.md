@@ -27,7 +27,7 @@ Also add a matching section in `docs/reading-notes.md` with a stable anchor:
 
 - Primary taxonomy category:
 - Cross-tags:
-- Section:
+- README subsection:
 - Original:
 - README summary:
 ```
@@ -35,10 +35,10 @@ Also add a matching section in `docs/reading-notes.md` with a stable anchor:
 Use [docs/taxonomy.md](docs/taxonomy.md) to choose one primary taxonomy category:
 
 - `A1-A5`: Scaling Laws
-- `B1-B5`: Data Selection
+- `B1-B6`: Data Selection and Improvement
 - `C1-C6`: Quality Evaluation Metrics
 
-If the resource is mainly a tool, dataset, benchmark, or modality-specific application, use the closest supporting section and add cross-tags such as `B2 quality filtering` or `C2 semantic consistency`.
+If the resource is mainly a tool, dataset, benchmark, or modality-specific application, use the closest README subsection and add cross-tags such as `B2 LLM pretraining data selection`, `B6 filtering/cleaning/deduplication`, or `C2 semantic consistency`.
 
 Prefer stable links in this order:
 
@@ -65,7 +65,8 @@ Use tags in descriptions when useful:
 - `A3 data mixture scaling`
 - `A5 post-training scaling`
 - `B1 data valuation`
-- `B2 quality filtering`
+- `B2 LLM pretraining data selection`
+- `B6 filtering cleaning deduplication`
 - `B4 alignment data selection`
 - `C1 toxicity`
 - `C2 semantic consistency`
