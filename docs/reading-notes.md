@@ -1305,6 +1305,8 @@ Unfinished README paper entries link to [paper-note-template.md](paper-note-temp
 <a id="scaling-laws-for-neural-language-models"></a>
 ## Scaling Laws for Neural Language Models
 
+- 来源：arXiv:2001.08361v1 [cs.LG]，https://arxiv.org/abs/2001.08361
+- 发表时间：2020-01-23
 - 主要分类：A1 预训练计算量 / token 缩放规律
 - 交叉标签：A2 数据受限缩放、A3 数据混合与领域缩放、A4 下游迁移缩放、B1 数据价值与影响、C6 评测可靠性
 - README 小节：Scaling Laws (Pretraining and Post-training)
