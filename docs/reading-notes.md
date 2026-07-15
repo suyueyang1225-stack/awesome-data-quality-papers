@@ -1305,29 +1305,314 @@ README paper entries link to [paper-note-template.md](paper-note-template.md) so
 <a id="scaling-laws-for-neural-language-models"></a>
 ## Scaling Laws for Neural Language Models
 
-- Section: Scaling Laws (Pretraining and Post-training)
+- Primary taxonomy category: A1 Pretraining compute/token scaling
+- Cross-tags: A2 Data-constrained scaling, A3 Data mixture and domain scaling, A4 Downstream transfer scaling, B1 General data valuation and influence, C6 Evaluation reliability
+- README subsection: Scaling Laws (Pretraining and Post-training)
 - Original: https://arxiv.org/abs/2001.08361
+- Code: N/A
+- Dataset: WebText2 is described in the paper but not released as a standalone public dataset.
+- Year / Venue: 2020, arXiv
+- Authors: Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, Dario Amodei
+- Reading status: carefully read
 - README summary: Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
 
-### Problem
+### 1. One-Sentence Takeaway
 
-- TBD
+> Language-model cross-entropy follows smooth power laws in model size, dataset size, and optimized compute, making data quantity and data reuse first-class variables in pretraining data quality planning.
 
-### Method
+### 2. Research Question
 
-- TBD
+- **Problem**: How can we predict language-model loss before running very large pretraining jobs, and how should a fixed compute budget be split across parameters, data, batch size, and training steps?
+- **Setting**: Decoder-only language-model pretraining on web text, with auxiliary evaluations on other text distributions.
+- **Why it matters**: Without scaling laws, data construction and compute allocation are mostly heuristic. Teams can overtrain small models, underbuild corpora, or misinterpret model gains as architecture gains.
+- **Main claim**: Test loss can be predicted by power laws in non-embedding parameter count `N`, dataset tokens `D`, and optimized compute `C_min`; compute-efficient training should scale model size much faster than the number of serial optimization steps.
 
-### Data Quality Angle
+### 3. Taxonomy Placement
 
-- TBD
+| Field | Answer |
+| --- | --- |
+| Main branch | Scaling Laws |
+| Subcategory | A1 Pretraining compute/token scaling |
+| Data object | Token sequence, document corpus, training token budget |
+| Quality signal | Predictive cross-entropy loss, transfer loss offsets across domains, overfitting ratio |
+| Data operation | Measure, budget, schedule, audit, decide whether more tokens or more parameters are needed |
 
-### Experiments and Evidence
+### 4. Background and Motivation
 
-- TBD
+- **Prior approach**: Earlier work studied model-size scaling, compute scaling, or architecture comparisons, but usually did not jointly vary model size, dataset size, training duration, and batch-size effects over many orders of magnitude.
+- **Limitation**: A fixed-data or fixed-compute view cannot answer whether the next unit of budget should go to more parameters, more tokens, larger batches, or more serial steps.
+- **Key intuition**: When models and data are large enough, the average loss behaves like a low-dimensional thermodynamic quantity: it is mostly controlled by scale and only weakly by architectural details.
+- **Assumptions**: The study assumes autoregressive maximum-likelihood training, mostly English web text, comparable tokenization, early stopping before severe overfitting, and extrapolation from sub-2B parameter experiments to larger regimes.
 
-### Limitations and Follow-up Ideas
+### 5. Method / Metric / System
 
-- TBD
+#### 5.1 Method Overview
+
+- Input: model scale `N`, dataset size `D`, training compute `C`, batch size `B`, and training steps `S`.
+- Output: predicted test cross-entropy loss and compute-efficient allocation rules.
+- Core algorithm / metric: fit power laws for loss versus `N`, `D`, `C`, and adjusted compute `C_min`; then derive optimal allocations using fitted exponents.
+- Training or evaluation loop: train many Transformer language models, plus LSTM and recurrent/universal Transformer variants, on WebText2 and evaluate held-out loss.
+- Model or judge used: autoregressive language models; the judge is the negative log-likelihood on held-out text.
+- Human annotation, if any: N/A.
+- Thresholds, prompts, or scoring rules: N/A. The central scores are loss, overfitting ratio, critical batch size, and estimated compute to target loss.
+
+#### 5.2 Key Equations or Scoring Rules
+
+##### Equation / Score 1: Model-size scaling
+
+```text
+L(N) = (N_c / N) ^ alpha_N
+alpha_N ~= 0.076, N_c ~= 8.8e13 non-embedding parameters
+```
+
+**Meaning**: If data and compute are not limiting, larger non-embedding parameter count predicts lower loss.
+
+**Symbols**:
+- `L`: cross-entropy loss in nats per token.
+- `N`: non-embedding parameter count.
+- `N_c`: fitted scale constant.
+- `alpha_N`: model-size scaling exponent.
+
+##### Equation / Score 2: Dataset-size scaling
+
+```text
+L(D) = (D_c / D) ^ alpha_D
+alpha_D ~= 0.095, D_c ~= 5.4e13 tokens
+```
+
+**Meaning**: If model size is not limiting and training is early-stopped, more unique training tokens reduce loss by a power law.
+
+##### Equation / Score 3: Optimized compute scaling
+
+```text
+L(C_min) = (C_c_min / C_min) ^ alpha_C_min
+alpha_C_min ~= 0.050, C_c_min ~= 3.1e8 PF-days
+```
+
+**Meaning**: The best achievable loss under a compute budget follows a slower power law than either pure model-size or pure data-size scaling.
+
+##### Equation / Score 4: Joint model-data scaling
+
+```text
+L(N, D) = [ (N_c / N) ^ (alpha_N / alpha_D) + (D_c / D) ] ^ alpha_D
+```
+
+**Meaning**: Loss is modeled as a combined bottleneck from finite model size and finite data.
+
+##### Equation / Score 5: Training-step scaling
+
+```text
+L(N, S_min) = (N_c / N) ^ alpha_N + (S_c / S_min) ^ alpha_S
+alpha_S ~= 0.76, S_c ~= 2.1e3 steps
+```
+
+**Meaning**: At the critical-batch-size adjustment, finite optimization steps contribute an additive loss term.
+
+##### Equation / Score 6: Critical batch size
+
+```text
+B_crit(L) = B_star / L ^ (1 / alpha_B)
+alpha_B ~= 0.21, B_star ~= 2.1e8 tokens
+```
+
+**Meaning**: Lower-loss regimes can use much larger batches before extra batch size becomes compute inefficient.
+
+##### Equation / Score 7: Compute-efficient allocation
+
+```text
+N_opt  proportional to C_min ^ 0.73
+B_crit proportional to C_min ^ 0.24
+S_min  proportional to C_min ^ 0.03
+D_opt  proportional to C_min ^ 0.27, for one epoch
+```
+
+**Meaning**: With more compute, the optimal response is mainly to train a much larger model, use a moderately larger batch/data budget, and increase serial steps only weakly.
+
+#### 5.3 Algorithm Details
+
+```text
+Input:
+  A family of language models, training corpora, and compute budgets.
+
+Steps:
+1. Train many models while varying non-embedding parameters N, dataset size D, batch size B, and training steps S.
+2. Measure held-out cross-entropy loss on WebText2 and several transfer corpora.
+3. Fit separate power laws for L(N), L(D), and L(C).
+4. Fit joint laws L(N,D) and L(N,S_min) to model simultaneous bottlenecks.
+5. Estimate B_crit(L) and adjust compute/steps to derive C_min.
+6. Solve for compute-efficient N, B, S, and one-epoch data D at a target compute budget.
+
+Output:
+  Predictive scaling equations and practical allocation rules for language-model pretraining.
+```
+
+### 6. Data and Experimental Setup
+
+| Item | Details |
+| --- | --- |
+| Training data | WebText2, an expanded WebText-style corpus with about 20.3M documents, 96GB text, 1.62e10 words, 2.29e10 BPE tokens, and 6.6e8 held-out test tokens. |
+| Evaluation data | WebText2 held-out data plus Books Corpus, Common Crawl, English Wikipedia, and Internet Books to test transfer of loss trends across distributions. |
+| Models | Decoder-only Transformers from roughly 768 to 1.5B non-embedding parameters; also LSTMs and recurrent/universal Transformer variants for comparison. |
+| Baselines | Smaller models, alternative shapes at fixed parameter count, LSTMs, recurrent/universal Transformer variants, and naive compute fits without critical-batch adjustment. |
+| Metrics | Cross-entropy loss in nats/token, overfitting ratio, critical batch size, adjusted compute `C_min`, training steps `S_min`, and fitted exponents. |
+| Compute | Training compute is estimated as approximately `6NBS` non-embedding FLOPs; compute is reported in PF-days. Main runs use context length 1024 and large token batches. |
+| Reproducibility assets | Paper gives many equations and hyperparameter summaries, but no official code, public WebText2 release, or full run logs/checkpoints. |
+
+### 7. Figures, Tables, and Evidence
+
+#### Figure Checklist
+
+| Figure | What It Shows | Key Takeaway | Data-Quality Relevance |
+| --- | --- | --- | --- |
+| Figure 1 | Loss versus compute, dataset size, and parameter count. | All three axes follow clean power-law trends. | Data size is not merely an implementation detail; it is a predictable quality constraint. |
+| Figure 2 | Sample efficiency across model sizes. | Larger models need fewer examples to reach the same loss. | More parameters can make each token more valuable, complicating simple "more data is always better" rules. |
+| Figure 3 | Compute-efficient allocation as compute increases. | Model size grows fastest, batch/data grows moderately, serial steps grow slowly. | Pretraining-data planning should scale corpus and batch policy together with model scale. |
+| Figure 4 | Joint fits for `L(N,D)` and `L(N,S_min)`. | Two-variable laws explain model-data and model-step bottlenecks. | Provides a way to diagnose whether a run is data-limited or model-limited. |
+| Figure 5 | Loss across architecture shape variants. | Depth, width, and head-count choices matter less than total non-embedding scale. | Reduces the risk of attributing data or scale effects to architecture tweaks. |
+| Figure 6 | Total parameters versus non-embedding parameters. | Non-embedding parameters collapse the trend more cleanly. | Embedding-heavy small models can distort scaling measurements. |
+| Figure 7 | Transformer and LSTM comparisons. | Transformers outperform mainly through longer usable context. | Context length changes what information the data can expose to the model. |
+| Figure 8 | Evaluation on other text distributions. | Transfer losses track WebText2 loss with roughly constant offsets. | Domain quality can be modeled as an offset, but not fully explained. |
+| Figure 9 | Finite data bottleneck and overfitting. | Repeated data eventually limits loss; overfitting grows predictably. | Useful for deciding when deduplication and fresh-token acquisition matter. |
+| Figure 10 | Critical batch size versus loss. | `B_crit` increases as loss improves. | Batch policy affects how efficiently tokens are consumed. |
+| Figure 11 | Fixed-compute and fixed-step tradeoffs. | Loss follows the fitted `L(N,S_min)` relation across regimes. | Helps separate optimization insufficiency from data insufficiency. |
+| Figure 12 | Cost of suboptimal model sizes. | Being within a modest range of optimal size has small compute penalty. | Gives a tolerance band for practical corpus/model co-design. |
+| Figure 13 | Adjusted compute scaling. | `L(C_min)` is cleaner after critical-batch adjustment. | Data-quality budgets should be compared under compute-efficient training assumptions. |
+| Figure 14 | Optimal model size and minimum steps versus compute. | `N_opt` grows rapidly while `S_min` barely grows. | Signals that data and model-scale planning should happen before long-run training. |
+| Figure 15 | Extrapolated contradiction between compute and data laws. | Compute scaling eventually collides with a data-limited frontier. | Anticipates the central modern question: where do high-quality tokens come from? |
+| Figure 16 | Early stopping and overfitting lower bound. | The fitted laws predict when overfitting should start. | Can inform corpus refresh and repeated-token limits. |
+| Figure 17 | Recurrent/universal Transformer variants. | Alternative recurrence choices do not overturn the scale story. | Scale effects remain stronger than these architectural variants. |
+| Figure 18 | Critical batch-size fits. | Empirical fits support `B_crit(L)` across model sizes. | Validates the batch-size correction used in compute/data allocation. |
+| Figure 19 | Minimum steps for fixed loss. | Larger models require fewer minimum serial steps at fixed target loss. | Supports the claim that larger models are more sample efficient. |
+
+#### Table Checklist
+
+| Table | What It Reports | Best / Worst Result | Interpretation |
+| --- | --- | --- | --- |
+| Table 1 | Transformer parameter and FLOP estimates. | Training compute is approximated by `C ~= 6NBS`. | Defines the compute accounting used throughout the paper. |
+| Table 2 | Fitted `L(N,D)` values. | `alpha_N ~= 0.076`, `alpha_D ~= 0.103` in this fit. | Joint model-data scaling can explain finite-data effects. |
+| Table 3 | Fitted `L(N,S)` values. | `alpha_S ~= 0.76`, `S_c ~= 2.1e3`. | Optimization-step bottlenecks are much steeper than model/data exponents. |
+| Table 4 | Summary of power-law equations. | Lists laws for `N`, `D`, `C`, `C_min`, `L(N,D)`, and `L(N,S)`. | Useful compact reference for future note writers. |
+| Table 5 | Empirical fitted exponents and scale constants. | `alpha_N=0.076`, `alpha_D=0.095`, `alpha_C_min=0.050`, `alpha_B=0.21`, `alpha_S=0.76`. | The exponents are the paper's main reusable numbers. |
+| Table 6 | Compute-efficient allocations. | `p_N=0.73`, `p_B=0.24`, `p_S=0.03`, `p_D=0.27`. | Converts scaling laws into training-run design rules. |
+
+### 8. Main Results
+
+- **Result 1**: Loss follows power laws in `N`, `D`, and `C_min` across many orders of magnitude, with diminishing returns along each axis.
+- **Result 2**: Compute-efficient training favors larger models trained for fewer steps relative to convergence; converging smaller models is inefficient.
+- **Result 3**: The dataset size required to avoid overfitting grows sublinearly with model size, approximately `D >= 5e3 * N^0.74` for the paper's chosen tolerance.
+- **Result 4**: Architecture shape matters weakly compared with non-embedding parameter count.
+- **Result 5**: Transfer distributions show similar loss trends with domain-specific offsets, suggesting that the scaling variable is not purely WebText2-specific.
+- **Ablation insight**: Excluding embeddings makes the parameter scaling cleaner, especially for small models where vocabulary embeddings dominate.
+- **Negative result**: The paper does not find a sharp "jamming transition" where model size reaches dataset size under its early-stopping regime.
+
+### 9. Data Quality Angle
+
+#### 9.1 What Quality Means in This Paper
+
+The paper does not define data quality as toxicity, factuality, duplication, or semantic richness. Instead, it treats corpus quality implicitly through the ability of tokens to reduce held-out cross-entropy under a fixed model and compute budget. In this view, high-quality pretraining data is data that shifts the loss frontier downward or delays the point where repeated tokens create a finite-data bottleneck.
+
+#### 9.2 Quality Signals
+
+| Signal | How It Is Measured | Strength | Weakness |
+| --- | --- | --- | --- |
+| Predictive loss | Held-out cross-entropy on WebText2 and transfer corpora. | Smooth, quantitative, and comparable across scales. | Can hide toxicity, factuality, duplication, and downstream capability failures. |
+| Dataset-size bottleneck | `L(D)` and `L(N,D)` fits. | Makes finite-data limitations measurable. | Counts tokens rather than measuring token uniqueness or information density directly. |
+| Overfitting ratio | `L(N,D) / L(N,infinity) - 1`. | Gives an operational repeated-data warning. | Depends on early-stopping and corpus distribution. |
+| Domain offset | Evaluation loss on other corpora as a function of WebText2 loss. | Shows whether pretraining improvements transfer. | Does not identify which documents or domains cause the offset. |
+| Critical batch size | Empirical `B_crit(L)` fits. | Connects optimization efficiency to data consumption rate. | Far extrapolation is uncertain and sensitive to optimization assumptions. |
+
+#### 9.3 Quality Improvement Operation
+
+| Operation | Target Data | Expected Benefit | Possible Side Effect |
+| --- | --- | --- | --- |
+| Acquire fresh tokens | Pretraining corpus | Avoid data-limited scaling and overfitting. | More raw web tokens may add noise, toxicity, or duplicates if not filtered. |
+| Deduplicate and control reuse | Repeated documents or tokens | Preserve effective dataset size and reduce memorization pressure. | Aggressive deduplication may remove useful recurring patterns or minority-domain coverage. |
+| Domain balancing | Web, books, Wikipedia, common crawl-like data | Reduce transfer offsets and improve generalization. | Better average loss may still underperform on rare or safety-critical slices. |
+| Compute-aware data scheduling | Token batches and epochs | Spend tokens where marginal loss reduction is highest. | The paper does not provide a direct per-example selection rule. |
+
+### 10. Critical Assessment
+
+#### Strengths
+
+1. The study gives a compact predictive framework rather than a loose empirical trend, with equations for model-size, data-size, compute, batch, and training-step effects.
+2. The experiments explicitly test architecture shape, transfer corpora, finite data, and batch-size adjustment instead of reporting only one scaling curve.
+3. The fitted allocation law is practically actionable: it tells a training team whether to buy more data, scale parameters, or run longer.
+
+#### Limitations
+
+1. WebText2 is not released as a full reproducible dataset, so exact data effects cannot be independently audited.
+2. The largest empirical models are about 1.5B non-embedding parameters, so trillion-parameter and trillion-token conclusions are extrapolations.
+3. Data quality is reduced to language-model loss; the paper does not measure toxicity, factuality, social bias, provenance, deduplication quality, or benchmark contamination.
+4. Later work, especially compute-optimal studies such as Chinchilla, found different parameter-token tradeoffs under larger runs and different datasets, so the allocation exponents should not be treated as timeless constants.
+
+#### Failure Modes and Risks
+
+- **Metric gaming**: Optimizing only cross-entropy could favor common, easy-to-predict text while ignoring factuality, reasoning diversity, or safety.
+- **Bias or coverage loss**: Domain offsets show transfer variation, but the paper does not audit demographic, linguistic, or topic coverage.
+- **Toxicity / safety regression**: Toxic content is not measured, so lower loss could still come with unsafe generation behavior.
+- **Data contamination**: Benchmark contamination is not a central evaluation target.
+- **Overfitting to judge / benchmark**: The main judge is held-out loss, which can understate memorization and exact-overlap issues.
+- **Generalization across domains or languages**: The work is mostly English text; cross-lingual and multimodal scaling remain open.
+
+### 11. Reproducibility Assessment
+
+| Item | Status | Notes |
+| --- | --- | --- |
+| Code released | No | No official training/evaluation code is linked in the paper. |
+| Data released | No | WebText2 is described but not released as a reproducible corpus. |
+| Data recipe released | Partial | The WebText-style construction and corpus scale are described, but exact crawl/filter details are insufficient for exact recreation. |
+| Prompts / annotation guide released | N/A | This is unsupervised language-model pretraining. |
+| Hyperparameters released | Partial | The paper reports architecture families, optimizer choices, context length, batch settings, and several training details. |
+| Compute reported | Partial | Compute is estimated analytically and reported in PF-days, but raw training logs are not released. |
+| Contamination checks | No | The paper evaluates transfer loss but does not present modern contamination auditing. |
+
+### 12. Relation to Other Papers
+
+- **Builds on**:
+  - Hestness et al., 2017: earlier neural scaling-law observations.
+  - McCandlish et al., 2018: critical batch size and gradient-noise-scale ideas.
+- **Compared with**:
+  - Training Compute-Optimal Large Language Models: later Chinchilla work revises the compute-optimal parameter-token balance and argues for many more training tokens relative to model size.
+  - Data Mixing Laws: extends the scaling-law mindset from total token count to domain mixture composition.
+- **Contradicts or complicates**:
+  - Simple "train to convergence" practice: the paper argues that convergence of small models is compute inefficient.
+  - Simple "bigger dataset is always the main lever" intuition: the paper argues that larger models can be more sample efficient.
+- **Should be read with**:
+  - Scaling Data-Constrained Language Models: for what happens when fresh high-quality tokens are scarce.
+  - DataComp-LM: for dataset construction and quality evaluation under controlled corpus recipes.
+  - Dolma / FineWeb: for modern large-scale corpus design, filtering, and documentation.
+
+### 13. Implications for Our Research
+
+- **Useful idea to borrow**: Treat data quality interventions as frontier shifts. A filter, deduplication method, or data selector is valuable if it improves the loss/capability frontier at fixed `N`, `D`, and `C`.
+- **Potential baseline**: Use the paper's `L(N,D)` form as a null model for whether a data-quality method beats simple token-count scaling.
+- **Potential metric**: Effective-token value, measured as the loss improvement of a curated subset relative to an equal-size random subset.
+- **Potential dataset or benchmark**: Construct WebText-like controlled corpora with explicit metadata for toxicity, deduplication, domain, knowledge density, and semantic consistency.
+- **Experiment we should run**: For a fixed compute budget, compare random tokens, filtered high-quality tokens, deduplicated tokens, and domain-balanced tokens, then fit whether each intervention changes `alpha_D`, `D_c`, or only the intercept.
+- **Open question created by this paper**: Can semantic quality and safety filters shift scaling laws, or do they mainly change downstream behavior at similar loss?
+
+### 14. Open Questions
+
+1. How do the fitted exponents change under modern corpora with stronger filtering, deduplication, and contamination controls?
+2. Can we replace raw token count `D` with an "effective information density" measure that better predicts loss and downstream transfer?
+3. How should scaling laws incorporate toxic content, factual inconsistency, privacy risk, and benchmark leakage rather than only held-out loss?
+4. Do post-training data quality metrics obey similarly smooth laws, or are they more task- and judge-dependent?
+5. Which data-quality operations shift the intercept versus the exponent of the scaling curve?
+
+### 15. Note Completion Checklist
+
+- [x] Original link is included.
+- [x] README `阅读笔记` link points to `docs/paper-note-template.md`.
+- [x] Primary taxonomy category is filled.
+- [x] Cross-tags are filled when the paper spans multiple branches.
+- [x] All required template sections are kept.
+- [x] All important equations or scoring rules are captured.
+- [x] All main figures are summarized.
+- [x] All main tables are summarized.
+- [x] Data, models, metrics, and baselines are recorded.
+- [x] Data-quality angle is explicit.
+- [x] Limitations and failure modes are explicit.
+- [x] Reproducibility status is assessed.
 
 <a id="training-compute-optimal-large-language-models"></a>
 ## Training Compute-Optimal Large Language Models
