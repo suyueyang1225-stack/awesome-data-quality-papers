@@ -30,8 +30,19 @@ This repository organizes the field around three research directions:
 - **Deduplication**: exact duplicates, near duplicates, benchmark leakage, train-test contamination.
 - **Traceability**: provenance, licenses, metadata, curation logs, and reproducible processing pipelines.
 
+## Systematic Taxonomy
+
+The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonomy.md) for the full classification rules, cross-tag policy, and reading workflow.
+
+| Pillar | Substructure | Main Result |
+| --- | --- | --- |
+| **Scaling Laws** | Pretraining scaling, data-constrained scaling, data mixture/domain scaling, downstream transfer scaling, post-training/alignment scaling | Predict how data quality and quantity interact with compute, model size, and training stage. |
+| **Data Selection** | Data valuation/influence, quality filtering, mixture optimization, instruction/alignment data selection, synthetic data selection | Decide which data should be kept, weighted, mixed, scheduled, or generated for target capabilities. |
+| **Quality Evaluation Metrics** | Toxicity/safety, semantic/factual consistency, knowledge density, diversity/coverage, contamination, multimodal quality | Measure whether data is useful, safe, consistent, dense, representative, and reliable. |
+
 ## Contents
 
+- [Systematic Taxonomy](#systematic-taxonomy)
 - [General Surveys and Position Papers](#general-surveys-and-position-papers)
 - [Scaling Laws (Pretraining and Post-training)](#scaling-laws-pretraining-and-post-training)
 - [Data Quality for LLM Pretraining](#data-quality-for-llm-pretraining)
@@ -221,6 +232,8 @@ This repository organizes the field around three research directions:
 ## Contribution Guide
 
 Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Every paper should have one primary taxonomy category and optional cross-tags. Use [docs/taxonomy.md](docs/taxonomy.md) to decide whether the entry belongs under Scaling Laws, Data Selection, Quality Evaluation Metrics, or a supporting section.
 
 When adding a paper, prefer this format:
 
