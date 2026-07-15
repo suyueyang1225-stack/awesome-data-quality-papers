@@ -43,82 +43,83 @@ This repository organizes the field around three questions:
 - [Datasets and Data-Centric Benchmarks](#datasets-and-data-centric-benchmarks)
 - [Research Roadmap](#research-roadmap)
 - [Contribution Guide](#contribution-guide)
+- [Reading Notes](docs/reading-notes.md)
 
 ## General Surveys and Position Papers
 
-- [Data-Centric Artificial Intelligence](https://arxiv.org/abs/2212.11854) - A broad survey of data-centric AI goals, methods, and lifecycle thinking.
-- [Systematic Review of Data-Centric Approaches in Artificial Intelligence and Machine Learning](https://www.sciencedirect.com/science/article/pii/S2666764923000279) - Reviews data quality assessment, preprocessing, transfer learning, semi-supervised learning, MLOps, and data scale effects.
-- [Data Valuation in Machine Learning: Ingredients, Strategies, and Open Challenges](https://www.ijcai.org/proceedings/2022/782) - Formalizes data valuation and compares major valuation strategies.
-- [On LLMs-Driven Synthetic Data Generation, Curation, and Evaluation](https://aclanthology.org/2024.findings-acl.658/) - Survey of synthetic data workflows, curation, evaluation, and risks.
-- [What Makes a High-Quality Training Dataset for Large Language Models: A Practitioners' Perspective](https://nzjohng.github.io/publications/papers/ase2024_1.pdf) - Practitioner-oriented discussion of dataset quality factors for LLM development.
+- **Data-Centric Artificial Intelligence** - [原文](https://arxiv.org/abs/2212.11854) · [阅读笔记](docs/reading-notes.md#data-centric-artificial-intelligence) - A broad survey of data-centric AI goals, methods, and lifecycle thinking.
+- **Systematic Review of Data-Centric Approaches in Artificial Intelligence and Machine Learning** - [原文](https://www.sciencedirect.com/science/article/pii/S2666764923000279) · [阅读笔记](docs/reading-notes.md#systematic-review-of-data-centric-approaches-in-artificial-intelligence-and-machine-learning) - Reviews data quality assessment, preprocessing, transfer learning, semi-supervised learning, MLOps, and data scale effects.
+- **Data Valuation in Machine Learning: Ingredients, Strategies, and Open Challenges** - [原文](https://www.ijcai.org/proceedings/2022/782) · [阅读笔记](docs/reading-notes.md#data-valuation-in-machine-learning-ingredients-strategies-and-open-challenges) - Formalizes data valuation and compares major valuation strategies.
+- **On LLMs-Driven Synthetic Data Generation, Curation, and Evaluation** - [原文](https://aclanthology.org/2024.findings-acl.658/) · [阅读笔记](docs/reading-notes.md#on-llms-driven-synthetic-data-generation-curation-and-evaluation) - Survey of synthetic data workflows, curation, evaluation, and risks.
+- **What Makes a High-Quality Training Dataset for Large Language Models: A Practitioners' Perspective** - [原文](https://nzjohng.github.io/publications/papers/ase2024_1.pdf) · [阅读笔记](docs/reading-notes.md#what-makes-a-high-quality-training-dataset-for-large-language-models-a-practitioners-perspective) - Practitioner-oriented discussion of dataset quality factors for LLM development.
 
 ## Data Quality for LLM Pretraining
 
-- [DataComp-LM: In Search of the Next Generation of Training Sets for Language Models](https://arxiv.org/abs/2406.11794) - Controlled testbed for language-model data curation, including filtering, deduplication, data mixing, and downstream evaluation.
-- [The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale](https://arxiv.org/abs/2406.17557) - Documents large-scale web data filtering, deduplication, and ablations behind FineWeb and FineWeb-Edu.
-- [Dolma: An Open Corpus of Three Trillion Tokens for Language Model Pretraining Research](https://arxiv.org/abs/2402.00159) - Open corpus and toolkit with documented curation choices and intermediate analyses.
-- [RedPajama: An Open Dataset for Training Large Language Models](https://papers.nips.cc/paper_files/paper/2024/hash/d34497330b1fd6530f7afd86d0df9f76-Abstract-Datasets_and_Benchmarks_Track.html) - Open reproduction-oriented dataset effort emphasizing transparency, access, and metadata.
-- [QuRating: Selecting High-Quality Data for Training Language Models](https://arxiv.org/abs/2402.09739) - LLM-assisted quality ratings over writing style, expertise, facts/trivia, and educational value for pretraining data selection.
-- [Analyzing Similarity Metrics for Data Selection for Language Model Pretraining](https://arxiv.org/abs/2502.02494) - Studies how embedding similarity relates to pretraining-loss similarity and data diversification.
-- [Rethinking Classifier-Based Quality Filtering for LLM Pretraining](https://openreview.net/forum?id=vSBACt34gS) - Analyzes classifier-based quality filtering and challenges simple interpretations of quality scores.
+- **DataComp-LM: In Search of the Next Generation of Training Sets for Language Models** - [原文](https://arxiv.org/abs/2406.11794) · [阅读笔记](docs/reading-notes.md#datacomp-lm-in-search-of-the-next-generation-of-training-sets-for-language-models) - Controlled testbed for language-model data curation, including filtering, deduplication, data mixing, and downstream evaluation.
+- **The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale** - [原文](https://arxiv.org/abs/2406.17557) · [阅读笔记](docs/reading-notes.md#the-fineweb-datasets-decanting-the-web-for-the-finest-text-data-at-scale) - Documents large-scale web data filtering, deduplication, and ablations behind FineWeb and FineWeb-Edu.
+- **Dolma: An Open Corpus of Three Trillion Tokens for Language Model Pretraining Research** - [原文](https://arxiv.org/abs/2402.00159) · [阅读笔记](docs/reading-notes.md#dolma-an-open-corpus-of-three-trillion-tokens-for-language-model-pretraining-research) - Open corpus and toolkit with documented curation choices and intermediate analyses.
+- **RedPajama: An Open Dataset for Training Large Language Models** - [原文](https://papers.nips.cc/paper_files/paper/2024/hash/d34497330b1fd6530f7afd86d0df9f76-Abstract-Datasets_and_Benchmarks_Track.html) · [阅读笔记](docs/reading-notes.md#redpajama-an-open-dataset-for-training-large-language-models) - Open reproduction-oriented dataset effort emphasizing transparency, access, and metadata.
+- **QuRating: Selecting High-Quality Data for Training Language Models** - [原文](https://arxiv.org/abs/2402.09739) · [阅读笔记](docs/reading-notes.md#qurating-selecting-high-quality-data-for-training-language-models) - LLM-assisted quality ratings over writing style, expertise, facts/trivia, and educational value for pretraining data selection.
+- **Analyzing Similarity Metrics for Data Selection for Language Model Pretraining** - [原文](https://arxiv.org/abs/2502.02494) · [阅读笔记](docs/reading-notes.md#analyzing-similarity-metrics-for-data-selection-for-language-model-pretraining) - Studies how embedding similarity relates to pretraining-loss similarity and data diversification.
+- **Rethinking Classifier-Based Quality Filtering for LLM Pretraining** - [原文](https://openreview.net/forum?id=vSBACt34gS) · [阅读笔记](docs/reading-notes.md#rethinking-classifier-based-quality-filtering-for-llm-pretraining) - Analyzes classifier-based quality filtering and challenges simple interpretations of quality scores.
 
 ## Instruction Tuning and Alignment Data
 
-- [AlpaGasus: Training a Better Alpaca with Fewer Data](https://openreview.net/forum?id=FdVXgSJhvz) - Filters low-quality instruction data with an LLM judge and improves instruction tuning with fewer examples.
-- [LESS: Selecting Influential Data for Targeted Instruction Tuning](https://proceedings.mlr.press/v235/xia24c.html) - Optimizer-aware influence-based selection for inducing target capabilities.
-- [What Makes Good Data for Alignment? A Comprehensive Study of Automatic Data Selection in Instruction Tuning](https://openreview.net/forum?id=BTKAeLqLMw) - Studies automatic instruction-data selection for alignment.
-- [Self-Alignment with Instruction Backtranslation](https://openreview.net/forum?id=1oijHJBRsT) - Uses model-generated instructions from high-quality responses to improve instruction tuning data.
-- [LIMA: Less Is More for Alignment](https://arxiv.org/abs/2305.11206) - Shows strong alignment behavior can emerge from a small carefully curated supervised fine-tuning dataset.
+- **AlpaGasus: Training a Better Alpaca with Fewer Data** - [原文](https://openreview.net/forum?id=FdVXgSJhvz) · [阅读笔记](docs/reading-notes.md#alpagasus-training-a-better-alpaca-with-fewer-data) - Filters low-quality instruction data with an LLM judge and improves instruction tuning with fewer examples.
+- **LESS: Selecting Influential Data for Targeted Instruction Tuning** - [原文](https://proceedings.mlr.press/v235/xia24c.html) · [阅读笔记](docs/reading-notes.md#less-selecting-influential-data-for-targeted-instruction-tuning) - Optimizer-aware influence-based selection for inducing target capabilities.
+- **What Makes Good Data for Alignment? A Comprehensive Study of Automatic Data Selection in Instruction Tuning** - [原文](https://openreview.net/forum?id=BTKAeLqLMw) · [阅读笔记](docs/reading-notes.md#what-makes-good-data-for-alignment-a-comprehensive-study-of-automatic-data-selection-in-instruction-tuning) - Studies automatic instruction-data selection for alignment.
+- **Self-Alignment with Instruction Backtranslation** - [原文](https://openreview.net/forum?id=1oijHJBRsT) · [阅读笔记](docs/reading-notes.md#self-alignment-with-instruction-backtranslation) - Uses model-generated instructions from high-quality responses to improve instruction tuning data.
+- **LIMA: Less Is More for Alignment** - [原文](https://arxiv.org/abs/2305.11206) · [阅读笔记](docs/reading-notes.md#lima-less-is-more-for-alignment) - Shows strong alignment behavior can emerge from a small carefully curated supervised fine-tuning dataset.
 
 ## Data Selection, Valuation, and Influence
 
-- [Data Shapley: Equitable Valuation of Data for Machine Learning](https://arxiv.org/abs/1904.02868) - Shapley-value framework for assigning value to individual training examples.
-- [Estimating Training Data Influence by Tracing Gradient Descent](https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html) - TracIn estimates example influence using checkpoints and gradient information.
-- [Data Valuation Using Reinforcement Learning](https://arxiv.org/abs/1909.11671) - Learns data valuation policies for selecting beneficial samples.
-- [Datamodels: Predicting Predictions from Training Data](https://arxiv.org/abs/2202.00622) - Models how training subsets affect predictions and supports dataset debugging.
+- **Data Shapley: Equitable Valuation of Data for Machine Learning** - [原文](https://arxiv.org/abs/1904.02868) · [阅读笔记](docs/reading-notes.md#data-shapley-equitable-valuation-of-data-for-machine-learning) - Shapley-value framework for assigning value to individual training examples.
+- **Estimating Training Data Influence by Tracing Gradient Descent** - [原文](https://proceedings.neurips.cc/paper/2020/hash/e6385d39ec9394f2f3a354d9d2b88eec-Abstract.html) · [阅读笔记](docs/reading-notes.md#estimating-training-data-influence-by-tracing-gradient-descent) - TracIn estimates example influence using checkpoints and gradient information.
+- **Data Valuation Using Reinforcement Learning** - [原文](https://arxiv.org/abs/1909.11671) · [阅读笔记](docs/reading-notes.md#data-valuation-using-reinforcement-learning) - Learns data valuation policies for selecting beneficial samples.
+- **Datamodels: Predicting Predictions from Training Data** - [原文](https://arxiv.org/abs/2202.00622) · [阅读笔记](docs/reading-notes.md#datamodels-predicting-predictions-from-training-data) - Models how training subsets affect predictions and supports dataset debugging.
 - [LESS](https://github.com/princeton-nlp/LESS) - Codebase for influence-based targeted instruction data selection.
 - [pyDVL](https://pydvl.org/stable/value/) - Python library for data valuation methods and workflows.
 
 ## Filtering, Cleaning, and Deduplication
 
-- [Data-Juicer: A One-Stop Data Processing System for Large Language Models](https://arxiv.org/abs/2309.02033) - System for scalable LLM data processing, analysis, and data recipe exploration.
-- [Data-Juicer 2.0: Cloud-Scale Adaptive Data Processing for and with Foundation Models](https://proceedings.neurips.cc/paper_files/paper/2025/file/76dbd7e897be2eb883ede598b91270fb-Paper-Datasets_and_Benchmarks_Track.pdf) - Extends data processing to multimodal and cloud-scale pipelines.
-- [Deduplicating Training Data Makes Language Models Better](https://arxiv.org/abs/2107.06499) - Studies exact and near-deduplication effects on language modeling.
-- [SemDeDup: Data-Efficient Learning at Web-Scale Through Semantic Deduplication](https://arxiv.org/abs/2303.09540) - Semantic deduplication method for reducing redundancy while preserving performance.
-- [CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data](https://arxiv.org/abs/1911.00359) - Classic Common Crawl filtering pipeline for language-model corpora.
+- **Data-Juicer: A One-Stop Data Processing System for Large Language Models** - [原文](https://arxiv.org/abs/2309.02033) · [阅读笔记](docs/reading-notes.md#data-juicer-a-one-stop-data-processing-system-for-large-language-models) - System for scalable LLM data processing, analysis, and data recipe exploration.
+- **Data-Juicer 2.0: Cloud-Scale Adaptive Data Processing for and with Foundation Models** - [原文](https://proceedings.neurips.cc/paper_files/paper/2025/file/76dbd7e897be2eb883ede598b91270fb-Paper-Datasets_and_Benchmarks_Track.pdf) · [阅读笔记](docs/reading-notes.md#data-juicer-2-0-cloud-scale-adaptive-data-processing-for-and-with-foundation-models) - Extends data processing to multimodal and cloud-scale pipelines.
+- **Deduplicating Training Data Makes Language Models Better** - [原文](https://arxiv.org/abs/2107.06499) · [阅读笔记](docs/reading-notes.md#deduplicating-training-data-makes-language-models-better) - Studies exact and near-deduplication effects on language modeling.
+- **SemDeDup: Data-Efficient Learning at Web-Scale Through Semantic Deduplication** - [原文](https://arxiv.org/abs/2303.09540) · [阅读笔记](docs/reading-notes.md#semdedup-data-efficient-learning-at-web-scale-through-semantic-deduplication) - Semantic deduplication method for reducing redundancy while preserving performance.
+- **CCNet: Extracting High Quality Monolingual Datasets from Web Crawl Data** - [原文](https://arxiv.org/abs/1911.00359) · [阅读笔记](docs/reading-notes.md#ccnet-extracting-high-quality-monolingual-datasets-from-web-crawl-data) - Classic Common Crawl filtering pipeline for language-model corpora.
 - [deduplicate-text-datasets](https://github.com/google-research/deduplicate-text-datasets) - Official code for exact-substring deduplication from "Deduplicating Training Data Makes Language Models Better".
 
 ## Synthetic Data Generation and Curation
 
-- [Self-Instruct: Aligning Language Models with Self-Generated Instructions](https://arxiv.org/abs/2212.10560) - Bootstraps instruction-following data from model-generated instructions.
-- [Evol-Instruct](https://arxiv.org/abs/2304.12244) - Evolves instruction data to increase complexity and diversity.
-- [WizardLM](https://arxiv.org/abs/2304.12244) - Uses evolved instructions to improve instruction-following models.
-- [Orca: Progressive Learning from Complex Explanation Traces of GPT-4](https://arxiv.org/abs/2306.02707) - Uses explanation-rich synthetic data for imitation learning.
-- [Phi-1: Textbooks Are All You Need](https://arxiv.org/abs/2306.11644) - Demonstrates the power of high-quality synthetic textbook-style data for code models.
-- [LLMs-Driven Synthetic Data Generation, Curation, and Evaluation](https://arxiv.org/abs/2406.15126) - Survey of synthetic data generation and evaluation pipelines.
+- **Self-Instruct: Aligning Language Models with Self-Generated Instructions** - [原文](https://arxiv.org/abs/2212.10560) · [阅读笔记](docs/reading-notes.md#self-instruct-aligning-language-models-with-self-generated-instructions) - Bootstraps instruction-following data from model-generated instructions.
+- **Evol-Instruct** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#evol-instruct) - Evolves instruction data to increase complexity and diversity.
+- **WizardLM** - [原文](https://arxiv.org/abs/2304.12244) · [阅读笔记](docs/reading-notes.md#wizardlm) - Uses evolved instructions to improve instruction-following models.
+- **Orca: Progressive Learning from Complex Explanation Traces of GPT-4** - [原文](https://arxiv.org/abs/2306.02707) · [阅读笔记](docs/reading-notes.md#orca-progressive-learning-from-complex-explanation-traces-of-gpt-4) - Uses explanation-rich synthetic data for imitation learning.
+- **Phi-1: Textbooks Are All You Need** - [原文](https://arxiv.org/abs/2306.11644) · [阅读笔记](docs/reading-notes.md#phi-1-textbooks-are-all-you-need) - Demonstrates the power of high-quality synthetic textbook-style data for code models.
+- **LLMs-Driven Synthetic Data Generation, Curation, and Evaluation** - [原文](https://arxiv.org/abs/2406.15126) · [阅读笔记](docs/reading-notes.md#llms-driven-synthetic-data-generation-curation-and-evaluation) - Survey of synthetic data generation and evaluation pipelines.
 
 ## Multimodal Data Quality
 
-- [DataComp: In Search of the Next Generation of Multimodal Datasets](https://arxiv.org/abs/2304.14108) - Benchmark for dataset filtering strategies in multimodal contrastive learning.
-- [LAION-5B: An Open Large-Scale Dataset for Training Next Generation Image-Text Models](https://arxiv.org/abs/2210.08402) - Large-scale image-text dataset with filtering and safety-related documentation.
-- [CLIPScore: A Reference-free Evaluation Metric for Image Captioning](https://arxiv.org/abs/2104.08718) - Uses image-text alignment as a quality signal.
-- [TIVE: Less is More: High-Value Data Selection for Visual Instruction Tuning](https://github.com/simplelifetime/TIVE) - Studies redundancy and data selection in visual instruction data.
-- [A Comprehensive Study of Multimodal Large Language Models for Image Quality Assessment](https://arxiv.org/abs/2403.10854) - Evaluates multimodal LLMs as image quality assessors.
+- **DataComp: In Search of the Next Generation of Multimodal Datasets** - [原文](https://arxiv.org/abs/2304.14108) · [阅读笔记](docs/reading-notes.md#datacomp-in-search-of-the-next-generation-of-multimodal-datasets) - Benchmark for dataset filtering strategies in multimodal contrastive learning.
+- **LAION-5B: An Open Large-Scale Dataset for Training Next Generation Image-Text Models** - [原文](https://arxiv.org/abs/2210.08402) · [阅读笔记](docs/reading-notes.md#laion-5b-an-open-large-scale-dataset-for-training-next-generation-image-text-models) - Large-scale image-text dataset with filtering and safety-related documentation.
+- **CLIPScore: A Reference-free Evaluation Metric for Image Captioning** - [原文](https://arxiv.org/abs/2104.08718) · [阅读笔记](docs/reading-notes.md#clipscore-a-reference-free-evaluation-metric-for-image-captioning) - Uses image-text alignment as a quality signal.
+- **TIVE: Less is More: High-Value Data Selection for Visual Instruction Tuning** - [原文](https://github.com/simplelifetime/TIVE) · [阅读笔记](docs/reading-notes.md#tive-less-is-more-high-value-data-selection-for-visual-instruction-tuning) - Studies redundancy and data selection in visual instruction data.
+- **A Comprehensive Study of Multimodal Large Language Models for Image Quality Assessment** - [原文](https://arxiv.org/abs/2403.10854) · [阅读笔记](docs/reading-notes.md#a-comprehensive-study-of-multimodal-large-language-models-for-image-quality-assessment) - Evaluates multimodal LLMs as image quality assessors.
 
 ## RAG Data Quality
 
-- [RAGAS: Automated Evaluation of Retrieval Augmented Generation](https://arxiv.org/abs/2309.15217) - Evaluation framework for context relevance, faithfulness, answer correctness, and related RAG metrics.
-- [ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems](https://arxiv.org/abs/2311.09476) - Automated RAG evaluation with synthetic queries and judge models.
-- [Corrective Retrieval Augmented Generation](https://arxiv.org/abs/2401.15884) - Adds retrieved-document quality checks and correction behavior.
-- [Contextual Retrieval](https://www.anthropic.com/engineering/contextual-retrieval) - Enriches chunks with context before indexing to reduce retrieval failures.
-- [RAGChecker](https://arxiv.org/abs/2408.08067) - Fine-grained diagnostic framework for RAG systems.
+- **RAGAS: Automated Evaluation of Retrieval Augmented Generation** - [原文](https://arxiv.org/abs/2309.15217) · [阅读笔记](docs/reading-notes.md#ragas-automated-evaluation-of-retrieval-augmented-generation) - Evaluation framework for context relevance, faithfulness, answer correctness, and related RAG metrics.
+- **ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems** - [原文](https://arxiv.org/abs/2311.09476) · [阅读笔记](docs/reading-notes.md#ares-an-automated-evaluation-framework-for-retrieval-augmented-generation-systems) - Automated RAG evaluation with synthetic queries and judge models.
+- **Corrective Retrieval Augmented Generation** - [原文](https://arxiv.org/abs/2401.15884) · [阅读笔记](docs/reading-notes.md#corrective-retrieval-augmented-generation) - Adds retrieved-document quality checks and correction behavior.
+- **Contextual Retrieval** - [原文](https://www.anthropic.com/engineering/contextual-retrieval) · [阅读笔记](docs/reading-notes.md#contextual-retrieval) - Enriches chunks with context before indexing to reduce retrieval failures.
+- **RAGChecker** - [原文](https://arxiv.org/abs/2408.08067) · [阅读笔记](docs/reading-notes.md#ragchecker) - Fine-grained diagnostic framework for RAG systems.
 
 ## Benchmark Contamination and Evaluation Reliability
 
-- [Benchmark Data Contamination of Large Language Models: A Survey](https://arxiv.org/abs/2406.04244) - Reviews benchmark leakage, detection, and mitigation for LLM evaluation.
-- [Data Contamination: From Memorization to Exploitation](https://arxiv.org/abs/2312.08242) - Studies contamination effects and evaluation reliability.
-- [Detecting Pretraining Data from Large Language Models](https://arxiv.org/abs/2310.16789) - Detects whether text was likely present in model pretraining data.
-- [The WMDP Benchmark: Measuring and Reducing Malicious Use With Unlearning](https://arxiv.org/abs/2403.03218) - Useful for safety-sensitive data filtering and unlearning-oriented evaluation.
+- **Benchmark Data Contamination of Large Language Models: A Survey** - [原文](https://arxiv.org/abs/2406.04244) · [阅读笔记](docs/reading-notes.md#benchmark-data-contamination-of-large-language-models-a-survey) - Reviews benchmark leakage, detection, and mitigation for LLM evaluation.
+- **Data Contamination: From Memorization to Exploitation** - [原文](https://arxiv.org/abs/2312.08242) · [阅读笔记](docs/reading-notes.md#data-contamination-from-memorization-to-exploitation) - Studies contamination effects and evaluation reliability.
+- **Detecting Pretraining Data from Large Language Models** - [原文](https://arxiv.org/abs/2310.16789) · [阅读笔记](docs/reading-notes.md#detecting-pretraining-data-from-large-language-models) - Detects whether text was likely present in model pretraining data.
+- **The WMDP Benchmark: Measuring and Reducing Malicious Use With Unlearning** - [原文](https://arxiv.org/abs/2403.03218) · [阅读笔记](docs/reading-notes.md#the-wmdp-benchmark-measuring-and-reducing-malicious-use-with-unlearning) - Useful for safety-sensitive data filtering and unlearning-oriented evaluation.
 
 ## Tools and Systems
 
@@ -134,12 +135,12 @@ This repository organizes the field around three questions:
 
 ## Datasets and Data-Centric Benchmarks
 
-- [DataComp-LM](https://github.com/mlfoundations/dclm) - Benchmark and corpus for language-model data curation experiments.
+- **DataComp-LM** - [原文](https://github.com/mlfoundations/dclm) · [阅读笔记](docs/reading-notes.md#datacomp-lm) - Benchmark and corpus for language-model data curation experiments.
 - [FineWeb](https://huggingface.co/datasets/HuggingFaceFW/fineweb) - Large-scale filtered web corpus.
 - [FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) - Educational-quality subset derived from FineWeb.
 - [Dolma](https://huggingface.co/datasets/allenai/dolma) - Open pretraining corpus from AI2.
 - [RedPajama-Data](https://github.com/togethercomputer/RedPajama-Data) - Open LLM pretraining data recipes and metadata.
-- [The Pile](https://arxiv.org/abs/2101.00027) - Large open text corpus with diverse sources.
+- **The Pile** - [原文](https://arxiv.org/abs/2101.00027) · [阅读笔记](docs/reading-notes.md#the-pile) - Large open text corpus with diverse sources.
 - [OpenWebText](https://skylion007.github.io/OpenWebTextCorpus/) - Open reproduction-style web text corpus.
 
 ## Research Roadmap
@@ -183,7 +184,7 @@ Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 When adding a paper, prefer this format:
 
 ```markdown
-- [Paper Title](paper-url) - One-sentence summary focused on data quality evaluation or improvement. Optional: [Code](code-url), [Dataset](dataset-url).
+- **Paper Title** - [原文](paper-url) · [阅读笔记](docs/reading-notes.md#paper-title-anchor) - One-sentence summary focused on data quality evaluation or improvement. Optional: [Code](code-url), [Dataset](dataset-url).
 ```
 
 ## Related Awesome Lists

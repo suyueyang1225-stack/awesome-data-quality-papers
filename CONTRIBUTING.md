@@ -16,7 +16,18 @@ Good additions usually satisfy at least one of these criteria:
 Use concise, research-oriented summaries:
 
 ```markdown
-- [Title](paper-url) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
+- **Title** - [原文](paper-url) · [阅读笔记](docs/reading-notes.md#title-anchor) - One-sentence summary focused on data quality. Optional: [Code](code-url), [Dataset](dataset-url).
+```
+
+Also add a matching section in `docs/reading-notes.md` with a stable anchor:
+
+```markdown
+<a id="title-anchor"></a>
+## Title
+
+- Section:
+- Original:
+- README summary:
 ```
 
 Prefer stable links in this order:
@@ -50,4 +61,3 @@ Use tags in descriptions when useful:
 - `multimodal`
 - `contamination`
 - `safety`
-

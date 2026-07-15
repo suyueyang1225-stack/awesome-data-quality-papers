@@ -10,6 +10,7 @@ assignees: ""
 
 - Title:
 - URL:
+- Reading note anchor:
 - Year:
 - Venue:
 - Code:
@@ -34,4 +35,3 @@ Choose one:
 - Benchmark Contamination and Evaluation Reliability
 - Tools and Systems
 - Datasets and Data-Centric Benchmarks
-
