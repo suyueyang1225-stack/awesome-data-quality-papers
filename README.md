@@ -84,7 +84,7 @@ The repository uses a three-pillar taxonomy. See [docs/taxonomy.md](docs/taxonom
 
 ## Scaling Laws (Pretraining and Post-training)
 
-- **Scaling Laws for Neural Language Models** - [原文](https://arxiv.org/abs/2001.08361) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#scaling-laws-for-neural-language-models) - Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
+- **Scaling Laws for Neural Language Models** - [原文](https://arxiv.org/abs/2001.08361) · [阅读笔记](docs/reading-notes.md#scaling-laws-for-neural-language-models) · [PPT](docs/ppts/README.md#scaling-laws-for-neural-language-models) - Foundational scaling law for language-model loss as a function of model size, dataset size, and compute.
 - **Training Compute-Optimal Large Language Models** - [原文](https://arxiv.org/abs/2203.15556) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#training-compute-optimal-large-language-models) - Chinchilla-style compute-optimal scaling law for balancing parameter count and training tokens.
 - **Scaling Data-Constrained Language Models** - [原文](https://arxiv.org/abs/2305.16264) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#scaling-data-constrained-language-models) - Studies data repetition and data scarcity, useful for reasoning about finite high-quality data and reuse.
 - **Data Mixing Laws: Optimizing Data Mixtures by Predicting Language Modeling Performance** - [原文](https://arxiv.org/abs/2403.16952) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#data-mixing-laws-optimizing-data-mixtures-by-predicting-language-modeling-performance) - Models how pretraining data mixture proportions affect language-model performance.
@@ -257,7 +257,7 @@ This branch covers measurement and auditing signals. RAG data quality, multimoda
 
 ## Reading Note Standard
 
-All completed paper-reading notes must follow [docs/paper-note-template.md](docs/paper-note-template.md). The repository is designed for collaborative reading, so notes should use the same structure across papers.
+All completed paper-reading notes must follow [docs/paper-note-template.md](docs/paper-note-template.md). The repository is designed for collaborative reading, so notes should use the same structure across papers. For papers that already have completed notes, link `阅读笔记` to the paper's anchor in [docs/reading-notes.md](docs/reading-notes.md); for unassigned or unfinished papers, keep the link pointing to the template.
 
 Required rule:
 
@@ -278,7 +278,7 @@ When adding a paper, prefer this format:
 - **Paper Title** - [原文](paper-url) · [阅读笔记](docs/paper-note-template.md) · [PPT](docs/ppts/README.md#paper-title) - One-sentence summary focused on data quality evaluation or improvement. Optional: [Code](code-url), [Dataset](dataset-url).
 ```
 
-Each paper entry should link `阅读笔记` to [docs/paper-note-template.md](docs/paper-note-template.md). Use [docs/reading-notes.md](docs/reading-notes.md) as the lightweight note index when tracking reading progress.
+Each unfinished paper entry should link `阅读笔记` to [docs/paper-note-template.md](docs/paper-note-template.md). Once a full note is completed, update that entry to the corresponding anchor in [docs/reading-notes.md](docs/reading-notes.md).
 
 Each paper entry should also include a `PPT` link to [docs/ppts/README.md](docs/ppts/README.md). Upload editable decks as `.pptx` under `docs/ppts/files/` and PDF previews under `docs/ppts/previews/`.
 

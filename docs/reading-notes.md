@@ -4,7 +4,7 @@ This file provides a lightweight reading-progress index for each paper or paper-
 
 Completed paper-reading notes must follow the full structure in [paper-note-template.md](paper-note-template.md). Lightweight entries here are only for tracking status before a full note is written.
 
-README paper entries link to [paper-note-template.md](paper-note-template.md) so every contributor sees the same required format before writing.
+Unfinished README paper entries link to [paper-note-template.md](paper-note-template.md) so every contributor sees the same required format before writing. Completed entries should link to their paper-specific anchors in this file.
 
 <a id="data-centric-artificial-intelligence"></a>
 ## Data-Centric Artificial Intelligence
@@ -1602,7 +1602,7 @@ The paper does not define data quality as toxicity, factuality, duplication, or 
 ### 15. Note Completion Checklist
 
 - [x] Original link is included.
-- [x] README `阅读笔记` link points to `docs/paper-note-template.md`.
+- [x] README `阅读笔记` link points to this completed note anchor.
 - [x] Primary taxonomy category is filled.
 - [x] Cross-tags are filled when the paper spans multiple branches.
 - [x] All required template sections are kept.
