@@ -1302,6 +1302,41 @@ Unfinished README paper entries link to [paper-note-template.md](paper-note-temp
 
 - TBD
 
+<a id="scaling-laws-revisited-modeling-the-role-of-data-quality-in-language-model-pretraining"></a>
+## Scaling Laws Revisited: Modeling the Role of Data Quality in Language Model Pretraining
+
+- 来源与时间：【ICLR 2026】arXiv:2510.03313v2 [cs.LG]，2026-02-23，https://arxiv.org/abs/2510.03313
+- 主要分类：A1 预训练计算量 / token 缩放规律
+- 交叉标签：A2 数据受限缩放、A3 数据混合与领域缩放、B2 预训练数据选择与过滤、C3 知识密度与有效样本数
+- README 小节：Scaling Laws (Pretraining and Post-training)
+- 原文：https://arxiv.org/abs/2510.03313
+- 代码：N/A
+- 数据集：论文使用可控噪声注入的神经机器翻译和自回归建模实验；具体公开数据资产待补充。
+- 年份 / 发表渠道：2026, ICLR
+- 作者：Anirudh Subramanyam, Yuxin Chen, Robert L. Grossman
+- 阅读状态：待精读
+- README 摘要：在 Chinchilla-style scaling law 中引入无量纲数据质量参数 `Q`，将 loss 建模为模型规模、数据量和数据质量的联合函数。
+
+### Problem
+
+- TBD
+
+### Method
+
+- TBD
+
+### Data Quality Angle
+
+- TBD
+
+### Experiments and Evidence
+
+- TBD
+
+### Limitations and Follow-up Ideas
+
+- TBD
+
 <a id="scaling-laws-for-neural-language-models"></a>
 ## Scaling Laws for Neural Language Models
 
